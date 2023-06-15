@@ -3,6 +3,7 @@ package com.example.automarket.service.impl;
 import com.example.automarket.domain.model.User;
 import com.example.automarket.repository.UserRepository;
 import com.example.automarket.service.UserService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
@@ -14,13 +15,10 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 
+@RequiredArgsConstructor
 @Service
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
-
-    public UserServiceImpl(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
 
     @Cacheable(value = "users")
     public List<User> getAllUsers() {

@@ -6,14 +6,16 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import org.hibernate.Hibernate;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
+import java.util.List;
+import java.util.Objects;
 
+@Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -45,13 +47,17 @@ public class User extends BaseEntityAudit implements UserDetails {
     @Enumerated(EnumType.ORDINAL)
     private Role role;
 
+    @OneToMany(mappedBy = "user")
+    @ToString.Exclude
+    private List<Token> tokens;
+
     @Override
     public String toString() {
         return "User{" +
                 "name='" + name + '\'' +
                 ", email='" + email + '\'' +
-                "} " +
-                super.toString();
+                ", role='" + role.name() + '\'' +
+                "} ";
     }
 
     @Override
@@ -87,5 +93,18 @@ public class User extends BaseEntityAudit implements UserDetails {
     @Override
     public boolean isEnabled() {
         return enabled;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+        User user = (User) o;
+        return getId() != null && Objects.equals(getId(), user.getId());
+    }
+
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
     }
 }

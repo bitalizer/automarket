@@ -52,8 +52,6 @@ public abstract class BaseEntityAudit extends BaseEntity implements Serializable
     @Override
     public String toString() {
         return "BaseEntityAudit{" +
-                "createdBy='" + createdBy + '\'' +
-                ", updatedBy='" + updatedBy + '\'' +
                 ", createdAt=" + createdAt +
                 ", updatedAt=" + updatedAt +
                 "} " +
