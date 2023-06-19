@@ -48,6 +48,7 @@ public class User extends BaseEntityAudit implements UserDetails {
     private Role role;
 
     @OneToMany(mappedBy = "user")
+    @JsonIgnore
     @ToString.Exclude
     private List<Token> tokens;
 
