@@ -8,11 +8,18 @@ import com.example.automarket.service.TokenService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @RequiredArgsConstructor
 @Service
 public class TokenServiceImpl implements TokenService {
 
     private final TokenRepository tokenRepository;
+
+    @Override
+    public Optional<Token> findByToken(String token) {
+        return tokenRepository.findByToken(token);
+    }
 
     public void saveUserToken(User user, String jwtToken) {
         var token = Token.builder()

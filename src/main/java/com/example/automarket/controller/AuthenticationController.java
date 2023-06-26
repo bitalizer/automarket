@@ -2,14 +2,11 @@ package com.example.automarket.controller;
 
 import com.example.automarket.domain.dto.request.AuthenticationRequest;
 import com.example.automarket.domain.dto.request.RegistrationRequest;
+import com.example.automarket.domain.dto.request.TokenRefreshRequest;
 import com.example.automarket.domain.dto.response.JwtAuthenticationResponse;
 import com.example.automarket.service.AuthenticationService;
-import jakarta.servlet.ServletException;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -17,11 +14,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+
+@RequiredArgsConstructor
+@Validated
 @RestController
 @RequestMapping("/api/v1/auth")
-@RequiredArgsConstructor
-@Slf4j
-@Validated
 public class AuthenticationController {
 
     private final AuthenticationService authenticationService;
@@ -37,10 +34,7 @@ public class AuthenticationController {
     }
 
     @PostMapping("/refresh-token")
-    public void refreshToken(
-            HttpServletRequest request,
-            HttpServletResponse response
-    ) throws ServletException {
-        authenticationService.refreshToken(request, response);
+    public ResponseEntity<JwtAuthenticationResponse> refreshToken(@Valid @RequestBody TokenRefreshRequest request) {
+        return ResponseEntity.ok(authenticationService.refreshToken(request));
     }
 }
