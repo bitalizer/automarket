@@ -1,10 +1,10 @@
 package com.example.automarket.service.impl;
 
 import com.example.automarket.domain.TokenType;
-import com.example.automarket.domain.model.Token;
+import com.example.automarket.domain.model.RefreshToken;
 import com.example.automarket.domain.model.User;
-import com.example.automarket.repository.TokenRepository;
-import com.example.automarket.service.TokenService;
+import com.example.automarket.repository.RefreshTokenRepository;
+import com.example.automarket.service.RefreshTokenService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -12,34 +12,34 @@ import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
-public class TokenServiceImpl implements TokenService {
+public class RefreshTokenServiceImpl implements RefreshTokenService {
 
-    private final TokenRepository tokenRepository;
+    private final RefreshTokenRepository refreshTokenRepository;
 
     @Override
-    public Optional<Token> findByToken(String token) {
-        return tokenRepository.findByToken(token);
+    public Optional<RefreshToken> findByTokenAndExpiredFalseAndRevokedFalse(String token) {
+        return refreshTokenRepository.findByTokenAndExpiredFalseAndRevokedFalse(token);
     }
 
     public void saveUserToken(User user, String jwtToken) {
-        var token = Token.builder()
+        var token = RefreshToken.builder()
                 .user(user)
                 .token(jwtToken)
                 .tokenType(TokenType.BEARER)
                 .expired(false)
                 .revoked(false)
                 .build();
-        tokenRepository.save(token);
+        refreshTokenRepository.save(token);
     }
 
     public void revokeAllUserTokens(User user) {
-        var validUserTokens = tokenRepository.findAllByUser_IdAndExpiredFalseAndRevokedFalse(user.getId());
+        var validUserTokens = refreshTokenRepository.findAllByUser_IdAndExpiredFalseAndRevokedFalse(user.getId());
         if (validUserTokens.isEmpty())
             return;
         validUserTokens.forEach(token -> {
             token.setExpired(true);
             token.setRevoked(true);
         });
-        tokenRepository.saveAll(validUserTokens);
+        refreshTokenRepository.saveAll(validUserTokens);
     }
 }

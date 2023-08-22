@@ -1,6 +1,5 @@
 package com.example.automarket.filter;
 
-import com.example.automarket.repository.TokenRepository;
 import com.example.automarket.service.JwtService;
 import com.example.automarket.service.UserService;
 import jakarta.servlet.FilterChain;
@@ -25,7 +24,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final JwtService jwtService;
     private final UserService userService;
-    private final TokenRepository tokenRepository;
 
     @Override
     protected void doFilterInternal(
@@ -53,12 +51,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         return Optional.empty();
     }
 
-    private boolean isTokenValid(String jwt, UserDetails userDetails) {
-        return tokenRepository.findByToken(jwt)
-                .map(token -> !token.isExpired() && !token.isRevoked())
-                .orElse(false) && jwtService.isTokenValid(jwt, userDetails);
-    }
-
     private void processAuthentication(String jwt, HttpServletRequest request) {
         String userEmail = jwtService.extractUsername(jwt);
 
@@ -68,7 +60,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         UserDetails userDetails = userService.userDetailsService().loadUserByUsername(userEmail);
 
-        if (isTokenValid(jwt, userDetails)) {
+        if (jwtService.isTokenValid(jwt, userDetails)) {
             authenticateUser(userDetails, request);
         }
     }

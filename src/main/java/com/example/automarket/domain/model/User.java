@@ -6,13 +6,15 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.Hibernate;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
-import java.util.List;
 import java.util.Objects;
 
 @Data
@@ -38,19 +40,14 @@ public class User extends BaseEntityAudit implements UserDetails {
     @Column(name = "password")
     private String password;
 
-    @Column(name = "activated", nullable = false)
-    private boolean activated;
+    @Column(name = "locked", nullable = false)
+    private boolean locked;
 
     @Column(name = "enabled", nullable = false)
     private boolean enabled;
 
     @Enumerated(EnumType.ORDINAL)
     private Role role;
-
-    @OneToMany(mappedBy = "user")
-    @JsonIgnore
-    @ToString.Exclude
-    private List<Token> tokens;
 
     @Override
     public String toString() {
@@ -78,17 +75,17 @@ public class User extends BaseEntityAudit implements UserDetails {
 
     @Override
     public boolean isAccountNonExpired() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean isAccountNonLocked() {
-        return false;
+        return !locked;
     }
 
     @Override
     public boolean isCredentialsNonExpired() {
-        return false;
+        return true;
     }
 
     @Override

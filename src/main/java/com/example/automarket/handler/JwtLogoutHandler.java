@@ -1,6 +1,6 @@
 package com.example.automarket.handler;
 
-import com.example.automarket.repository.TokenRepository;
+import com.example.automarket.repository.RefreshTokenRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class JwtLogoutHandler implements LogoutHandler {
 
-    private final TokenRepository tokenRepository;
+    private final RefreshTokenRepository refreshTokenRepository;
 
     @Override
     public void logout(
@@ -27,12 +27,12 @@ public class JwtLogoutHandler implements LogoutHandler {
             return;
         }
         jwt = authHeader.substring(7);
-        var storedToken = tokenRepository.findByToken(jwt)
+        var storedToken = refreshTokenRepository.findByTokenAndExpiredFalseAndRevokedFalse(jwt)
                 .orElse(null);
         if (storedToken != null) {
             storedToken.setExpired(true);
             storedToken.setRevoked(true);
-            tokenRepository.save(storedToken);
+            refreshTokenRepository.save(storedToken);
             SecurityContextHolder.clearContext();
         }
     }

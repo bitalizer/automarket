@@ -9,7 +9,7 @@ import com.example.automarket.domain.model.User;
 import com.example.automarket.repository.UserRepository;
 import com.example.automarket.service.AuthenticationService;
 import com.example.automarket.service.JwtService;
-import com.example.automarket.service.TokenService;
+import com.example.automarket.service.RefreshTokenService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
@@ -18,6 +18,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
+
 @RequiredArgsConstructor
 @Service
 public class AuthenticationServiceImpl implements AuthenticationService {
@@ -25,7 +26,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
-    private final TokenService tokenService;
+    private final RefreshTokenService refreshTokenService;
     private final AuthenticationManager authenticationManager;
 
     @Override
@@ -39,17 +40,18 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                 .name(request.getName())
                 .email(request.getEmail())
                 .password(passwordEncoder.encode(request.getPassword()))
-                .role(Role.USER).build();
+                .role(Role.USER)
+                .enabled(true)
+                .build();
 
         var savedUser = userRepository.save(user);
-        var jwtToken = jwtService.generateToken(user);
+        var accessToken = jwtService.generateToken(user);
         var refreshToken = jwtService.generateRefreshToken(user);
 
-        tokenService.saveUserToken(savedUser, jwtToken);
-        tokenService.saveUserToken(savedUser, refreshToken);
+        refreshTokenService.saveUserToken(savedUser, refreshToken);
 
         return JwtAuthenticationResponse.builder()
-                .accessToken(jwtToken)
+                .accessToken(accessToken)
                 .refreshToken(refreshToken)
                 .build();
     }
@@ -62,15 +64,20 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                         request.getPassword()
                 )
         );
+
         var user = userRepository.findByEmail(request.getEmail())
                 .orElseThrow(() -> new IllegalArgumentException("Invalid email or password."));
-        var jwtToken = jwtService.generateToken(user);
+        var accessToken = jwtService.generateToken(user);
         var refreshToken = jwtService.generateRefreshToken(user);
-        tokenService.revokeAllUserTokens(user);
-        tokenService.saveUserToken(user, jwtToken);
-        tokenService.saveUserToken(user, refreshToken);
+
+        refreshTokenService.revokeAllUserTokens(user);
+
+        if (refreshTokenService.findByTokenAndExpiredFalseAndRevokedFalse(refreshToken).isEmpty()) {
+            refreshTokenService.saveUserToken(user, refreshToken);
+        }
+
         return JwtAuthenticationResponse.builder()
-                .accessToken(jwtToken)
+                .accessToken(accessToken)
                 .refreshToken(refreshToken)
                 .build();
     }
@@ -80,14 +87,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
         String refreshToken = request.getRefreshToken();
 
-        tokenService.findByToken(refreshToken)
-                .orElseThrow(() -> new AuthenticationCredentialsNotFoundException("Refresh token is not in database!"));
-
         String userEmail = jwtService.extractUsername(refreshToken);
-
-        if (userEmail == null) {
-            throw new AuthenticationCredentialsNotFoundException("Cannot extract email!");
-        }
 
         var user = userRepository.findByEmail(userEmail)
                 .orElseThrow(() -> new AuthenticationCredentialsNotFoundException("E-mail not found!"));
@@ -96,9 +96,10 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             throw new AuthenticationCredentialsNotFoundException("Invalid token!");
         }
 
+        refreshTokenService.findByTokenAndExpiredFalseAndRevokedFalse(refreshToken)
+                .orElseThrow(() -> new AuthenticationCredentialsNotFoundException("Refresh token is not in database!"));
+
         var accessToken = jwtService.generateToken(user);
-        tokenService.revokeAllUserTokens(user);
-        tokenService.saveUserToken(user, accessToken);
 
         return JwtAuthenticationResponse.builder()
                 .accessToken(accessToken)
