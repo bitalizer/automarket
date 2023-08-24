@@ -1,13 +1,14 @@
 package com.example.automarket.service.impl;
 
 import com.example.automarket.domain.dto.response.CarListingResponse;
-import com.example.automarket.domain.dto.response.ListingResponse;
 import com.example.automarket.domain.dto.response.TrailerListingResponse;
+import com.example.automarket.domain.dto.response.VehicleListingResponse;
 import com.example.automarket.domain.model.listing.CarListing;
 import com.example.automarket.domain.model.listing.Listing;
 import com.example.automarket.domain.model.listing.TrailerListing;
-import com.example.automarket.repository.ListingRepository;
-import com.example.automarket.service.ListingService;
+import com.example.automarket.domain.model.listing.VehicleListing;
+import com.example.automarket.repository.VehicleRepository;
+import com.example.automarket.service.VehicleService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -17,25 +18,25 @@ import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
-public class ListingServiceImpl implements ListingService {
+public class VehicleServiceImpl implements VehicleService {
 
-    private final ListingRepository listingRepository;
+    private final VehicleRepository vehicleRepository;
 
-    public List<ListingResponse> getAllListings() {
-        List<Listing> listings = listingRepository.findAll();
+    public List<VehicleListingResponse> getAllListings() {
+        List<VehicleListing> listings = vehicleRepository.findAll();
         return listings.stream().map(this::mapToListingResponse).collect(Collectors.toList());
     }
 
-    public Optional<Listing> getListingById(Long listingId) {
-        return listingRepository.findById(listingId);
+    public Optional<VehicleListing> getListingById(Long listingId) {
+        return vehicleRepository.findById(listingId);
     }
 
     @Override
     public void deleteListingById(Long listingId) {
-        listingRepository.deleteById(listingId);
+        vehicleRepository.deleteById(listingId);
     }
 
-    private ListingResponse mapToListingResponse(Listing listing) {
+    private VehicleListingResponse mapToListingResponse(Listing listing) {
         if (listing instanceof CarListing carListing) {
             return new CarListingResponse(carListing);
         } else if (listing instanceof TrailerListing trailerListing) {

@@ -14,8 +14,18 @@ import lombok.experimental.SuperBuilder;
 @Entity
 @AllArgsConstructor
 @Table(name = "trailer_listings")
-public class TrailerListing extends Listing {
+public class TrailerListing extends VehicleListing implements Loadable {
 
     @Column(nullable = false)
     private Integer payload;
+
+    @Override
+    public Integer getPayload() {
+        return payload;
+    }
+
+    @Override
+    public void setPayload(Integer payload) {
+        this.payload = payload;
+    }
 }

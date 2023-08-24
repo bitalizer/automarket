@@ -4,7 +4,7 @@ import com.example.automarket.domain.model.listing.CarListing;
 import lombok.Getter;
 
 @Getter
-public class CarListingResponse extends ListingResponse {
+public class CarListingResponse extends VehicleListingResponse {
     private final Integer productionYear;
     private final Integer mileage;
 

@@ -7,8 +7,6 @@ import com.example.automarket.domain.model.VehicleBrand;
 import com.example.automarket.domain.model.VehicleModel;
 import com.example.automarket.domain.model.base.BaseEntityAudit;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -19,11 +17,6 @@ import lombok.experimental.SuperBuilder;
 @NoArgsConstructor
 @SuperBuilder(toBuilder = true)
 @Table(name = "listings")
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type")
-@JsonSubTypes({
-        @JsonSubTypes.Type(value = CarListing.class, name = "car"),
-        @JsonSubTypes.Type(value = TrailerListing.class, name = "trailer")
-})
 @Inheritance(strategy = InheritanceType.JOINED)
 public abstract class Listing extends BaseEntityAudit {
 
@@ -34,7 +27,7 @@ public abstract class Listing extends BaseEntityAudit {
     private String description;
 
     @Column(nullable = false)
-    private int price;
+    private Integer price;
 
     @Column(nullable = false)
     private ConditionType condition;

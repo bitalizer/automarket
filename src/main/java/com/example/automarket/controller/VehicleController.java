@@ -1,8 +1,9 @@
 package com.example.automarket.controller;
 
-import com.example.automarket.domain.dto.response.ListingResponse;
+import com.example.automarket.domain.dto.response.VehicleListingResponse;
 import com.example.automarket.domain.model.listing.Listing;
-import com.example.automarket.service.ListingService;
+import com.example.automarket.domain.model.listing.VehicleListing;
+import com.example.automarket.service.VehicleService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -15,19 +16,19 @@ import java.util.Optional;
 @RequiredArgsConstructor
 @Validated
 @RestController
-@RequestMapping("/api/v1/listings")
-public class ListingController {
+@RequestMapping("/api/v1/vehicles")
+public class VehicleController {
 
-    private final ListingService listingService;
+    private final VehicleService vehicleService;
 
     @GetMapping
-    public List<ListingResponse> getAllListings() {
-        return listingService.getAllListings();
+    public List<VehicleListingResponse> getAllVehicles() {
+        return vehicleService.getAllListings();
     }
 
     @GetMapping("{id}")
     public ResponseEntity<Listing> getListingById(@PathVariable(value = "id") Long listingId) {
-        Optional<Listing> optionalListing = listingService.getListingById(listingId);
+        Optional<VehicleListing> optionalListing = vehicleService.getListingById(listingId);
         if (optionalListing.isPresent()) {
             Listing listing = optionalListing.get();
             return ResponseEntity.ok(listing);
@@ -37,10 +38,10 @@ public class ListingController {
     }
 
     @DeleteMapping("{id}")
-    public ResponseEntity<Void> deleteUserById(@PathVariable(value = "id") Long listingId) {
-        Optional<Listing> optionalUser = listingService.getListingById(listingId);
+    public ResponseEntity<Void> deleteListingById(@PathVariable(value = "id") Long listingId) {
+        Optional<VehicleListing> optionalUser = vehicleService.getListingById(listingId);
         if (optionalUser.isPresent()) {
-            listingService.deleteListingById(listingId);
+            vehicleService.deleteListingById(listingId);
             return ResponseEntity.noContent().build();
         } else {
             return ResponseEntity.notFound().build();
