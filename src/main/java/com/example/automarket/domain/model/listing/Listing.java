@@ -1,5 +1,6 @@
 package com.example.automarket.domain.model.listing;
 
+import com.example.automarket.domain.ConditionType;
 import com.example.automarket.domain.model.Region;
 import com.example.automarket.domain.model.User;
 import com.example.automarket.domain.model.VehicleBrand;
@@ -34,6 +35,9 @@ public abstract class Listing extends BaseEntityAudit {
 
     @Column(nullable = false)
     private int price;
+
+    @Column(nullable = false)
+    private ConditionType condition;
 
     @ManyToOne
     @JoinColumn(name = "brand_id", nullable = false)
