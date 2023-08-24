@@ -1,5 +1,6 @@
 package com.example.automarket.domain.model;
 
+import com.example.automarket.domain.model.base.BaseEntity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
@@ -24,7 +25,7 @@ public class VehicleModel extends BaseEntity {
     @Column(name = "name", nullable = false)
     private String name;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "brand_id")
     private VehicleBrand brand;
 
