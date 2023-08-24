@@ -34,8 +34,8 @@ public class UserServiceImpl implements UserService {
                     @CachePut(value = "user-single", key = "#result.id")
             }
     )
-    public User createNewUser(User user) {
-        return userRepository.save(user);
+    public void createNewUser(User user) {
+        userRepository.save(user);
     }
 
     @Cacheable(value = "user-single", key = "#userId")
