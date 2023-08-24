@@ -1,15 +1,13 @@
 package com.example.automarket.domain.model;
 
 import com.example.automarket.domain.Role;
+import com.example.automarket.domain.model.base.BaseEntityAudit;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.Hibernate;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -17,10 +15,11 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.Collection;
 import java.util.Objects;
 
-@Data
-@Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@Getter
+@Setter
+@Builder
 @Entity
 @Table(name = "users")
 public class User extends BaseEntityAudit implements UserDetails {
@@ -40,12 +39,15 @@ public class User extends BaseEntityAudit implements UserDetails {
     @Column(name = "password")
     private String password;
 
+    @JsonIgnore
     @Column(name = "locked", nullable = false)
     private boolean locked;
 
+    @JsonIgnore
     @Column(name = "enabled", nullable = false)
     private boolean enabled;
 
+    @JsonIgnore
     @Enumerated(EnumType.ORDINAL)
     private Role role;
 
