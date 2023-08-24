@@ -10,6 +10,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.core.annotation.Order;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.stereotype.Component;
@@ -21,6 +22,7 @@ import java.util.List;
 @Slf4j
 @RequiredArgsConstructor
 @Component
+@Order(1)
 public class VehicleDataSeeder implements CommandLineRunner {
 
     private final VehicleBrandRepository brandRepository;
@@ -30,6 +32,7 @@ public class VehicleDataSeeder implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
+        log.info("Seeding vehicle data");
         List<BrandModelJson> brandModelList = readJsonDataFromFile();
 
         for (BrandModelJson brandModelJson : brandModelList) {
