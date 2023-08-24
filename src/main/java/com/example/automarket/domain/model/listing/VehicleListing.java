@@ -1,5 +1,6 @@
 package com.example.automarket.domain.model.listing;
 
+import com.example.automarket.domain.BodyType;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import jakarta.persistence.*;
@@ -28,4 +29,7 @@ public class VehicleListing extends Listing {
 
     @Column
     private boolean exchangeable;
+
+    @Column(nullable = false)
+    private BodyType bodyType;
 }

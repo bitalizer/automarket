@@ -27,8 +27,15 @@ public class VehicleServiceImpl implements VehicleService {
         return listings.stream().map(this::mapToListingResponse).collect(Collectors.toList());
     }
 
-    public Optional<VehicleListing> getListingById(Long listingId) {
-        return vehicleRepository.findById(listingId);
+    public Optional<VehicleListingResponse> getListingById(Long listingId) {
+        Optional<VehicleListing> vehicleListing = vehicleRepository.findById(listingId);
+
+        if (vehicleListing.isPresent()) {
+            VehicleListingResponse vehicleListingResponse = mapToListingResponse(vehicleListing.get());
+            return Optional.of(vehicleListingResponse);
+        } else {
+            return Optional.empty();
+        }
     }
 
     @Override

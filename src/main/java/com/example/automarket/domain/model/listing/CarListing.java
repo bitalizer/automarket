@@ -32,13 +32,13 @@ public class CarListing extends VehicleListing implements Fuelable, Driven, Colo
     @Column(nullable = false)
     private DriveType driveType;
 
-    @Column()
+    @Column
     private Color color;
 
-    @Column()
+    @Column
     private String plateNumber;
 
-    @Column()
+    @Column
     private String vinCode;
 
     @Override

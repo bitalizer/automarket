@@ -1,8 +1,6 @@
 package com.example.automarket.controller;
 
 import com.example.automarket.domain.dto.response.VehicleListingResponse;
-import com.example.automarket.domain.model.listing.Listing;
-import com.example.automarket.domain.model.listing.VehicleListing;
 import com.example.automarket.service.VehicleService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -26,21 +24,23 @@ public class VehicleController {
         return vehicleService.getAllListings();
     }
 
-    @GetMapping("{id}")
-    public ResponseEntity<Listing> getListingById(@PathVariable(value = "id") Long listingId) {
-        Optional<VehicleListing> optionalListing = vehicleService.getListingById(listingId);
-        if (optionalListing.isPresent()) {
-            Listing listing = optionalListing.get();
-            return ResponseEntity.ok(listing);
+    @GetMapping("/{id}")
+    public ResponseEntity<VehicleListingResponse> getListingById(@PathVariable("id") Long listingId) {
+        Optional<VehicleListingResponse> optionalListingResponse = vehicleService.getListingById(listingId);
+
+        if (optionalListingResponse.isPresent()) {
+            VehicleListingResponse listingResponse = optionalListingResponse.get();
+            return ResponseEntity.ok(listingResponse);
         } else {
             return ResponseEntity.notFound().build();
         }
     }
 
-    @DeleteMapping("{id}")
-    public ResponseEntity<Void> deleteListingById(@PathVariable(value = "id") Long listingId) {
-        Optional<VehicleListing> optionalUser = vehicleService.getListingById(listingId);
-        if (optionalUser.isPresent()) {
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteListingById(@PathVariable("id") Long listingId) {
+        Optional<VehicleListingResponse> optionalListingResponse = vehicleService.getListingById(listingId);
+
+        if (optionalListingResponse.isPresent()) {
             vehicleService.deleteListingById(listingId);
             return ResponseEntity.noContent().build();
         } else {
