@@ -1,9 +1,12 @@
-package com.example.automarket.domain.model.listing;
+package com.example.automarket.domain.model.listing.vehicle;
 
 import com.example.automarket.domain.Color;
 import com.example.automarket.domain.DriveType;
 import com.example.automarket.domain.FuelType;
-import com.example.automarket.domain.model.TransmissionType;
+import com.example.automarket.domain.TransmissionType;
+import com.example.automarket.domain.model.listing.Colorable;
+import com.example.automarket.domain.model.listing.Driven;
+import com.example.automarket.domain.model.listing.Fuelable;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;

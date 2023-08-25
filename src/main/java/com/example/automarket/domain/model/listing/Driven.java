@@ -1,7 +1,7 @@
 package com.example.automarket.domain.model.listing;
 
 import com.example.automarket.domain.DriveType;
-import com.example.automarket.domain.model.TransmissionType;
+import com.example.automarket.domain.TransmissionType;
 
 public interface Driven {
 

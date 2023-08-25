@@ -1,4 +1,4 @@
-package com.example.automarket.domain.model;
+package com.example.automarket.domain;
 
 public enum TransmissionType {
     MANUAL,

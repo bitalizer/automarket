@@ -1,6 +1,6 @@
 package com.example.automarket.domain.dto.response;
 
-import com.example.automarket.domain.model.listing.TrailerListing;
+import com.example.automarket.domain.model.listing.vehicle.TrailerListing;
 import lombok.Getter;
 
 @Getter

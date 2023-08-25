@@ -2,7 +2,7 @@ package com.example.automarket.domain.dto.response;
 
 import com.example.automarket.domain.DriveType;
 import com.example.automarket.domain.FuelType;
-import com.example.automarket.domain.model.listing.CarListing;
+import com.example.automarket.domain.model.listing.vehicle.CarListing;
 import lombok.Getter;
 
 @Getter

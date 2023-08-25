@@ -1,6 +1,10 @@
-package com.example.automarket.domain.model.listing;
+package com.example.automarket.domain.model.listing.part;
 
-import com.example.automarket.domain.BodyType;
+import com.example.automarket.domain.DealType;
+import com.example.automarket.domain.PartAvailability;
+import com.example.automarket.domain.model.listing.Listing;
+import com.example.automarket.domain.model.listing.vehicle.CarListing;
+import com.example.automarket.domain.model.listing.vehicle.TrailerListing;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import jakarta.persistence.*;
@@ -12,24 +16,18 @@ import lombok.experimental.SuperBuilder;
 @Entity
 @NoArgsConstructor
 @SuperBuilder(toBuilder = true)
-@Table(name = "vehicle_listings")
+@Table(name = "part_listings")
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type")
 @JsonSubTypes({
         @JsonSubTypes.Type(value = CarListing.class, name = "car"),
         @JsonSubTypes.Type(value = TrailerListing.class, name = "trailer")
 })
 @Inheritance(strategy = InheritanceType.JOINED)
-public class VehicleListing extends Listing {
+public class PartListing extends Listing {
 
     @Column
-    private Integer productionYear;
-
+    private PartAvailability availability;
     @Column
-    private boolean auction;
-
-    @Column
-    private boolean exchangeable;
-
-    @Column(nullable = false)
-    private BodyType bodyType;
+    private DealType dealType;
 }
+

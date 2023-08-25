@@ -1,7 +1,7 @@
 package com.example.automarket.domain.dto.response;
 
 import com.example.automarket.domain.BodyType;
-import com.example.automarket.domain.model.listing.VehicleListing;
+import com.example.automarket.domain.model.listing.vehicle.VehicleListing;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import lombok.Getter;
