@@ -5,10 +5,12 @@ import lombok.Getter;
 
 @Getter
 public class TrailerListingResponse extends VehicleListingResponse {
-    private final Integer payload;
 
-    public TrailerListingResponse(TrailerListing trailerListing) {
-        super(trailerListing);
-        this.payload = trailerListing.getPayload();
-    }
+	private final Integer payload;
+
+	public TrailerListingResponse(TrailerListing trailerListing) {
+		super(trailerListing);
+		this.payload = trailerListing.getPayload();
+	}
+
 }

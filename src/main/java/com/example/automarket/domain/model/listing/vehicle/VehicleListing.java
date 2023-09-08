@@ -15,22 +15,21 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder(toBuilder = true)
 @Table(name = "vehicle_listings")
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type")
-@JsonSubTypes({
-        @JsonSubTypes.Type(value = CarListing.class, name = "car"),
-        @JsonSubTypes.Type(value = TrailerListing.class, name = "trailer")
-})
+@JsonSubTypes({ @JsonSubTypes.Type(value = CarListing.class, name = "car"),
+		@JsonSubTypes.Type(value = TrailerListing.class, name = "trailer") })
 @Inheritance(strategy = InheritanceType.JOINED)
 public class VehicleListing extends Listing {
 
-    @Column
-    private Integer productionYear;
+	@Column
+	private Integer productionYear;
 
-    @Column
-    private boolean auction;
+	@Column
+	private boolean auction;
 
-    @Column
-    private boolean exchangeable;
+	@Column
+	private boolean exchangeable;
 
-    @Column(nullable = false)
-    private BodyType bodyType;
+	@Column(nullable = false)
+	private BodyType bodyType;
+
 }

@@ -6,9 +6,11 @@ import com.example.automarket.domain.dto.request.TokenRefreshRequest;
 import com.example.automarket.domain.dto.response.JwtAuthenticationResponse;
 
 public interface AuthenticationService {
-    JwtAuthenticationResponse register(RegistrationRequest request);
 
-    JwtAuthenticationResponse authenticate(AuthenticationRequest request);
+	JwtAuthenticationResponse register(RegistrationRequest request);
 
-    JwtAuthenticationResponse refreshToken(TokenRefreshRequest request);
+	JwtAuthenticationResponse authenticate(AuthenticationRequest request);
+
+	JwtAuthenticationResponse refreshToken(TokenRefreshRequest request);
+
 }

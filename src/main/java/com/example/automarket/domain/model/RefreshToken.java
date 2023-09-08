@@ -15,21 +15,22 @@ import lombok.NoArgsConstructor;
 @Table(name = "refresh_tokens")
 public class RefreshToken {
 
-    @Id
-    @GeneratedValue
-    private Integer id;
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "user_id")
+	public User user;
 
-    @Column(nullable = false, unique = true)
-    private String token;
+	@Id
+	@GeneratedValue
+	private Integer id;
 
-    @Enumerated(EnumType.STRING)
-    private TokenType tokenType = TokenType.BEARER;
+	@Column(nullable = false, unique = true)
+	private String token;
 
-    private boolean revoked;
+	@Enumerated(EnumType.STRING)
+	private TokenType tokenType = TokenType.BEARER;
 
-    private boolean expired;
+	private boolean revoked;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
-    public User user;
+	private boolean expired;
+
 }

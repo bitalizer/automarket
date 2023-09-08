@@ -20,32 +20,33 @@ import java.util.Objects;
 @Table(name = "vehicle_models")
 public class VehicleModel extends BaseEntity {
 
-    @NotBlank
-    @Size(max = 35)
-    @Column(name = "name", nullable = false)
-    private String name;
+	@NotBlank
+	@Size(max = 35)
+	@Column(name = "name", nullable = false)
+	private String name;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "brand_id")
-    private VehicleBrand brand;
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "brand_id")
+	private VehicleBrand brand;
 
-    @Override
-    public String toString() {
-        return "VahicleModel{" +
-                "name='" + name + '\'' +
-                "} ";
-    }
+	@Override
+	public String toString() {
+		return "VahicleModel{" + "name='" + name + '\'' + "} ";
+	}
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
-        VehicleModel user = (VehicleModel) o;
-        return getId() != null && Objects.equals(getId(), user.getId());
-    }
+	@Override
+	public boolean equals(Object o) {
+		if (this == o)
+			return true;
+		if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o))
+			return false;
+		VehicleModel user = (VehicleModel) o;
+		return getId() != null && Objects.equals(getId(), user.getId());
+	}
 
-    @Override
-    public int hashCode() {
-        return getClass().hashCode();
-    }
+	@Override
+	public int hashCode() {
+		return getClass().hashCode();
+	}
+
 }

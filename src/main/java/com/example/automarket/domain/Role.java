@@ -14,6 +14,7 @@ import static com.example.automarket.domain.Permission.*;
 @RequiredArgsConstructor
 public enum Role {
 
+	// @formatter:off
     USER(Collections.emptySet()),
     ADMIN(
             Set.of(
@@ -35,18 +36,19 @@ public enum Role {
                     MANAGER_CREATE
             )
     )
+	;
 
-    ;
+	// @formatter:on
 
-    @Getter
-    private final Set<Permission> permissions;
+	@Getter
+	private final Set<Permission> permissions;
 
-    public List<SimpleGrantedAuthority> getAuthorities() {
-        var authorities = getPermissions()
-                .stream()
-                .map(permission -> new SimpleGrantedAuthority(permission.getPermission()))
-                .collect(Collectors.toList());
-        authorities.add(new SimpleGrantedAuthority("ROLE_" + this.name()));
-        return authorities;
-    }
+	public List<SimpleGrantedAuthority> getAuthorities() {
+		var authorities = getPermissions().stream()
+			.map(permission -> new SimpleGrantedAuthority(permission.getPermission()))
+			.collect(Collectors.toList());
+		authorities.add(new SimpleGrantedAuthority("ROLE_" + this.name()));
+		return authorities;
+	}
+
 }

@@ -22,34 +22,36 @@ import java.util.List;
 @Order(2)
 public class RegionSeeder implements CommandLineRunner {
 
+	private final RegionRepository regionRepository;
 
-    private final RegionRepository regionRepository;
-    private final ResourceLoader resourceLoader;
-    private final ObjectMapper objectMapper;
+	private final ResourceLoader resourceLoader;
 
-    @Override
-    public void run(String... args) throws Exception {
-        log.info("Seeding regions");
+	private final ObjectMapper objectMapper;
 
-        List<String> regionNames = readJsonDataFromFile();
+	@Override
+	public void run(String... args) throws Exception {
+		log.info("Seeding regions");
 
-        for (String regionName : regionNames) {
-            Region region = new Region(regionName);
-            regionRepository.save(region);
-        }
-    }
+		List<String> regionNames = readJsonDataFromFile();
 
-    public Resource loadResource(String location) {
-        return resourceLoader.getResource(location);
-    }
+		for (String regionName : regionNames) {
+			Region region = new Region(regionName);
+			regionRepository.save(region);
+		}
+	}
 
-    private List<String> readJsonDataFromFile() throws IOException {
+	public Resource loadResource(String location) {
+		return resourceLoader.getResource(location);
+	}
 
-        Resource resource = loadResource("classpath:data/regions.json");
+	private List<String> readJsonDataFromFile() throws IOException {
 
-        File file = resource.getFile();
+		Resource resource = loadResource("classpath:data/regions.json");
 
-        return objectMapper.readValue(file, new TypeReference<>() {
-        });
-    }
+		File file = resource.getFile();
+
+		return objectMapper.readValue(file, new TypeReference<>() {
+		});
+	}
+
 }

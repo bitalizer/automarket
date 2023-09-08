@@ -14,32 +14,33 @@ import java.util.Optional;
 @Service
 public class RefreshTokenServiceImpl implements RefreshTokenService {
 
-    private final RefreshTokenRepository refreshTokenRepository;
+	private final RefreshTokenRepository refreshTokenRepository;
 
-    @Override
-    public Optional<RefreshToken> findByTokenAndExpiredFalseAndRevokedFalse(String token) {
-        return refreshTokenRepository.findByTokenAndExpiredFalseAndRevokedFalse(token);
-    }
+	@Override
+	public Optional<RefreshToken> findByTokenAndExpiredFalseAndRevokedFalse(String token) {
+		return refreshTokenRepository.findByTokenAndExpiredFalseAndRevokedFalse(token);
+	}
 
-    public void saveUserToken(User user, String jwtToken) {
-        var token = RefreshToken.builder()
-                .user(user)
-                .token(jwtToken)
-                .tokenType(TokenType.BEARER)
-                .expired(false)
-                .revoked(false)
-                .build();
-        refreshTokenRepository.save(token);
-    }
+	public void saveUserToken(User user, String jwtToken) {
+		var token = RefreshToken.builder()
+			.user(user)
+			.token(jwtToken)
+			.tokenType(TokenType.BEARER)
+			.expired(false)
+			.revoked(false)
+			.build();
+		refreshTokenRepository.save(token);
+	}
 
-    public void revokeAllUserTokens(User user) {
-        var validUserTokens = refreshTokenRepository.findAllByUser_IdAndExpiredFalseAndRevokedFalse(user.getId());
-        if (validUserTokens.isEmpty())
-            return;
-        validUserTokens.forEach(token -> {
-            token.setExpired(true);
-            token.setRevoked(true);
-        });
-        refreshTokenRepository.saveAll(validUserTokens);
-    }
+	public void revokeAllUserTokens(User user) {
+		var validUserTokens = refreshTokenRepository.findAllByUser_IdAndExpiredFalseAndRevokedFalse(user.getId());
+		if (validUserTokens.isEmpty())
+			return;
+		validUserTokens.forEach(token -> {
+			token.setExpired(true);
+			token.setRevoked(true);
+		});
+		refreshTokenRepository.saveAll(validUserTokens);
+	}
+
 }

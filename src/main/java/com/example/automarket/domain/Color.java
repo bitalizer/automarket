@@ -1,5 +1,6 @@
 package com.example.automarket.domain;
 
+// @formatter:off
 public enum Color {
     BEIGE,
     WHITE,
@@ -13,4 +14,3 @@ public enum Color {
     RED,
     BLACK
 }
-

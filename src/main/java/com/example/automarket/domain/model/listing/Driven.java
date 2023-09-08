@@ -5,23 +5,24 @@ import com.example.automarket.domain.TransmissionType;
 
 public interface Driven {
 
-    Integer getMileage();
+	Integer getMileage();
 
-    void setMileage(Integer mileage);
+	void setMileage(Integer mileage);
 
-    String getPlateNumber();
+	String getPlateNumber();
 
-    void setPlateNumber(String plateNumber);
+	void setPlateNumber(String plateNumber);
 
-    String vinCode();
+	String vinCode();
 
-    void setVinCode(String vinCode);
+	void setVinCode(String vinCode);
 
-    TransmissionType getTransmissionType();
+	TransmissionType getTransmissionType();
 
-    void setTransmissionType(TransmissionType transmissionType);
+	void setTransmissionType(TransmissionType transmissionType);
 
-    DriveType getDriveType();
+	DriveType getDriveType();
 
-    void setDriveType(DriveType wheelDriveType);
+	void setDriveType(DriveType wheelDriveType);
+
 }

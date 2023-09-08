@@ -20,36 +20,40 @@ import java.util.stream.Collectors;
 @Service
 public class VehicleServiceImpl implements VehicleService {
 
-    private final VehicleRepository vehicleRepository;
+	private final VehicleRepository vehicleRepository;
 
-    public List<VehicleListingResponse> getAllListings() {
-        List<VehicleListing> listings = vehicleRepository.findAll();
-        return listings.stream().map(this::mapToListingResponse).collect(Collectors.toList());
-    }
+	public List<VehicleListingResponse> getAllListings() {
+		List<VehicleListing> listings = vehicleRepository.findAll();
+		return listings.stream().map(this::mapToListingResponse).collect(Collectors.toList());
+	}
 
-    public Optional<VehicleListingResponse> getListingById(Long listingId) {
-        Optional<VehicleListing> vehicleListing = vehicleRepository.findById(listingId);
+	public Optional<VehicleListingResponse> getListingById(Long listingId) {
+		Optional<VehicleListing> vehicleListing = vehicleRepository.findById(listingId);
 
-        if (vehicleListing.isPresent()) {
-            VehicleListingResponse vehicleListingResponse = mapToListingResponse(vehicleListing.get());
-            return Optional.of(vehicleListingResponse);
-        } else {
-            return Optional.empty();
-        }
-    }
+		if (vehicleListing.isPresent()) {
+			VehicleListingResponse vehicleListingResponse = mapToListingResponse(vehicleListing.get());
+			return Optional.of(vehicleListingResponse);
+		}
+		else {
+			return Optional.empty();
+		}
+	}
 
-    @Override
-    public void deleteListingById(Long listingId) {
-        vehicleRepository.deleteById(listingId);
-    }
+	@Override
+	public void deleteListingById(Long listingId) {
+		vehicleRepository.deleteById(listingId);
+	}
 
-    private VehicleListingResponse mapToListingResponse(Listing listing) {
-        if (listing instanceof CarListing carListing) {
-            return new CarListingResponse(carListing);
-        } else if (listing instanceof TrailerListing trailerListing) {
-            return new TrailerListingResponse(trailerListing);
-        } else {
-            throw new java.lang.UnsupportedOperationException("Not supported yet.");
-        }
-    }
+	private VehicleListingResponse mapToListingResponse(Listing listing) {
+		if (listing instanceof CarListing carListing) {
+			return new CarListingResponse(carListing);
+		}
+		else if (listing instanceof TrailerListing trailerListing) {
+			return new TrailerListingResponse(trailerListing);
+		}
+		else {
+			throw new java.lang.UnsupportedOperationException("Not supported yet.");
+		}
+	}
+
 }

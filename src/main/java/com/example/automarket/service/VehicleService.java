@@ -7,9 +7,10 @@ import java.util.Optional;
 
 public interface VehicleService {
 
-    List<VehicleListingResponse> getAllListings();
+	List<VehicleListingResponse> getAllListings();
 
-    Optional<VehicleListingResponse> getListingById(Long listingId);
+	Optional<VehicleListingResponse> getListingById(Long listingId);
 
-    void deleteListingById(Long listingId);
+	void deleteListingById(Long listingId);
+
 }

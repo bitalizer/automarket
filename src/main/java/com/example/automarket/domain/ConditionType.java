@@ -1,5 +1,6 @@
 package com.example.automarket.domain;
 
+// @formatter:off
 public enum ConditionType {
     NEW,
     USED,
@@ -7,4 +8,3 @@ public enum ConditionType {
     DAMAGED,
     FOR_PARTS
 }
-

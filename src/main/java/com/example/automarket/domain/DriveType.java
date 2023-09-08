@@ -1,5 +1,6 @@
 package com.example.automarket.domain;
 
+// @formatter:off
 public enum DriveType {
     FRONT_WHEEL_DRIVE,
     REAR_WHEEL_DRIVE,

@@ -10,11 +10,11 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class JacksonConfig {
 
-    @Bean
-    public ObjectMapper objectMapper() {
-        return new ObjectMapper()
-                .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
-                .configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false)
-                .setPropertyNamingStrategy(PropertyNamingStrategies.SNAKE_CASE);
-    }
+	@Bean
+	public ObjectMapper objectMapper() {
+		return new ObjectMapper().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
+			.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false)
+			.setPropertyNamingStrategy(PropertyNamingStrategies.SNAKE_CASE);
+	}
+
 }

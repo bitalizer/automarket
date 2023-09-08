@@ -20,32 +20,33 @@ import lombok.experimental.SuperBuilder;
 @Inheritance(strategy = InheritanceType.JOINED)
 public abstract class Listing extends BaseEntityAudit {
 
-    @Column(nullable = false)
-    private String title;
+	@Column(nullable = false)
+	private String title;
 
-    @Column(nullable = false)
-    private String description;
+	@Column(nullable = false)
+	private String description;
 
-    @Column(nullable = false)
-    private Integer price;
+	@Column(nullable = false)
+	private Integer price;
 
-    @Column(nullable = false)
-    private ConditionType condition;
+	@Column(nullable = false)
+	private ConditionType condition;
 
-    @ManyToOne
-    @JoinColumn(name = "brand_id", nullable = false)
-    private VehicleBrand brand;
+	@ManyToOne
+	@JoinColumn(name = "brand_id", nullable = false)
+	private VehicleBrand brand;
 
-    @ManyToOne
-    @JoinColumn(name = "model_id", nullable = false)
-    private VehicleModel model;
+	@ManyToOne
+	@JoinColumn(name = "model_id", nullable = false)
+	private VehicleModel model;
 
-    @JsonIgnore
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "user_id", nullable = false)
-    private User user;
+	@JsonIgnore
+	@ManyToOne(fetch = FetchType.LAZY, optional = false)
+	@JoinColumn(name = "user_id", nullable = false)
+	private User user;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "region_id")
-    private Region region;
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "region_id")
+	private Region region;
+
 }

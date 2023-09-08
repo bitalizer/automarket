@@ -7,9 +7,10 @@ import java.util.Optional;
 
 public interface RefreshTokenService {
 
-    Optional<RefreshToken> findByTokenAndExpiredFalseAndRevokedFalse(String token);
+	Optional<RefreshToken> findByTokenAndExpiredFalseAndRevokedFalse(String token);
 
-    void saveUserToken(User user, String jwtToken);
+	void saveUserToken(User user, String jwtToken);
 
-    void revokeAllUserTokens(User user);
+	void revokeAllUserTokens(User user);
+
 }
