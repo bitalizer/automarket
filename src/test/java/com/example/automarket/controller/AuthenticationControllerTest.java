@@ -18,7 +18,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 @SpringBootTest
 @AutoConfigureMockMvc
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-class AuthenticationControllerIntegrationTest {
+class AuthenticationControllerTest {
 
     private static RegistrationRequest registrationRequest;
     private static String refreshToken; // Store the refresh token
