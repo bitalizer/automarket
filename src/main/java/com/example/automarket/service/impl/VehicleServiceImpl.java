@@ -14,7 +14,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -24,7 +23,7 @@ public class VehicleServiceImpl implements VehicleService {
 
 	public List<VehicleListingResponse> getAllListings() {
 		List<VehicleListing> listings = vehicleRepository.findAll();
-		return listings.stream().map(this::mapToListingResponse).collect(Collectors.toList());
+		return listings.stream().map(this::mapToListingResponse).toList();
 	}
 
 	public Optional<VehicleListingResponse> getListingById(Long listingId) {

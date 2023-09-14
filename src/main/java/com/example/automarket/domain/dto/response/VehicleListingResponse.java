@@ -1,17 +1,13 @@
 package com.example.automarket.domain.dto.response;
 
-import com.example.automarket.domain.BodyType;
+import com.example.automarket.domain.model.listing.vehicle.VehicleCategory;
 import com.example.automarket.domain.model.listing.vehicle.VehicleListing;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.example.automarket.domain.model.listing.vehicle.VehicleSubCategory;
 import lombok.Getter;
 
 import java.util.Date;
 
 @Getter
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type")
-@JsonSubTypes({ @JsonSubTypes.Type(value = CarListingResponse.class, name = "car"),
-		@JsonSubTypes.Type(value = TrailerListingResponse.class, name = "trailer") })
 public abstract class VehicleListingResponse {
 
 	private final Long id;
@@ -38,9 +34,11 @@ public abstract class VehicleListingResponse {
 
 	private final Date updatedAt;
 
-	private final BodyType bodyType;
+	private final VehicleCategory category;
 
-	public VehicleListingResponse(VehicleListing listing) {
+	private final VehicleSubCategory subCategory;
+
+	protected VehicleListingResponse(VehicleListing listing) {
 		this.id = listing.getId();
 		this.title = listing.getTitle();
 		this.description = listing.getDescription();
@@ -53,7 +51,8 @@ public abstract class VehicleListingResponse {
 		this.exchangeable = listing.isExchangeable();
 		this.createdAt = listing.getCreatedAt();
 		this.updatedAt = listing.getUpdatedAt();
-		this.bodyType = listing.getBodyType();
+		this.category = listing.getCategory();
+		this.subCategory = listing.getSubCategory();
 	}
 
 }

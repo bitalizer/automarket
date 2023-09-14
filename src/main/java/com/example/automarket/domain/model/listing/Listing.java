@@ -13,11 +13,9 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
 @Getter
-@Entity
 @NoArgsConstructor
 @SuperBuilder(toBuilder = true)
-@Table(name = "listings")
-@Inheritance(strategy = InheritanceType.JOINED)
+@MappedSuperclass
 public abstract class Listing extends BaseEntityAudit {
 
 	@Column(nullable = false)

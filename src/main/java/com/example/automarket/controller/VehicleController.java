@@ -19,7 +19,7 @@ public class VehicleController {
 	private final VehicleService vehicleService;
 
 	@GetMapping
-	public List<VehicleListingResponse> getAllVehicles() {
+	public List<VehicleListingResponse> getAllListings() {
 		return vehicleService.getAllListings();
 	}
 
