@@ -117,6 +117,7 @@ public class ListingFactory implements DummyFactory<Listing> {
 			.region(region)
 			.brand(model.getBrand())
 			.model(model)
+			.productionYear(randomGenerator.getRandomInt(1998, 2023))
 			.payload(payload)
 			.category(VehicleCategory.TRAILER)
 			.subCategory(VehicleSubCategory.TRAILER_LIGHT_TRAILER)
