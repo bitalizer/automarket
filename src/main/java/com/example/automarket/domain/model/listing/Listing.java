@@ -38,13 +38,13 @@ public abstract class Listing extends BaseEntityAudit {
 	@JoinColumn(name = "model_id", nullable = false)
 	private VehicleModel model;
 
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "region_id")
+	private Region region;
+
 	@JsonIgnore
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
 	@JoinColumn(name = "user_id", nullable = false)
 	private User user;
-
-	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "region_id")
-	private Region region;
 
 }
