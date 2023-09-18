@@ -1,21 +1,15 @@
 package com.example.automarket.seed.dummy;
 
-import com.example.automarket.domain.ConditionType;
-import com.example.automarket.domain.DriveType;
-import com.example.automarket.domain.FuelType;
-import com.example.automarket.domain.TransmissionType;
 import com.example.automarket.domain.model.Region;
 import com.example.automarket.domain.model.User;
-import com.example.automarket.domain.model.VehicleModel;
+import com.example.automarket.domain.model.listing.ConditionType;
 import com.example.automarket.domain.model.listing.Listing;
+import com.example.automarket.domain.model.listing.VehicleModel;
 import com.example.automarket.domain.model.listing.part.DealType;
 import com.example.automarket.domain.model.listing.part.PartAvailability;
 import com.example.automarket.domain.model.listing.part.PartCategory;
 import com.example.automarket.domain.model.listing.part.PartListing;
-import com.example.automarket.domain.model.listing.vehicle.CarListing;
-import com.example.automarket.domain.model.listing.vehicle.TrailerListing;
-import com.example.automarket.domain.model.listing.vehicle.VehicleCategory;
-import com.example.automarket.domain.model.listing.vehicle.VehicleSubCategory;
+import com.example.automarket.domain.model.listing.vehicle.*;
 import com.example.automarket.repository.RegionRepository;
 import com.example.automarket.repository.UserRepository;
 import com.example.automarket.repository.VehicleModelRepository;

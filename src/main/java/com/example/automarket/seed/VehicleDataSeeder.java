@@ -1,8 +1,8 @@
 package com.example.automarket.seed;
 
 import com.example.automarket.domain.json.BrandModelJson;
-import com.example.automarket.domain.model.VehicleBrand;
-import com.example.automarket.domain.model.VehicleModel;
+import com.example.automarket.domain.model.listing.VehicleBrand;
+import com.example.automarket.domain.model.listing.VehicleModel;
 import com.example.automarket.repository.VehicleBrandRepository;
 import com.example.automarket.repository.VehicleModelRepository;
 import com.fasterxml.jackson.core.type.TypeReference;

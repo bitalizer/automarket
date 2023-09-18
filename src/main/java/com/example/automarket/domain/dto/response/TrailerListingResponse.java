@@ -1,16 +1,12 @@
 package com.example.automarket.domain.dto.response;
 
-import com.example.automarket.domain.model.listing.vehicle.TrailerListing;
-import lombok.Getter;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 
-@Getter
+@EqualsAndHashCode(callSuper = true)
+@Data
 public class TrailerListingResponse extends VehicleListingResponse {
 
-	private final Integer payload;
-
-	public TrailerListingResponse(TrailerListing trailerListing) {
-		super(trailerListing);
-		this.payload = trailerListing.getPayload();
-	}
+	private Integer payload;
 
 }

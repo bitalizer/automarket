@@ -1,47 +1,40 @@
 package com.example.automarket.domain.dto.response;
 
-import com.example.automarket.domain.model.listing.Listing;
-import lombok.Getter;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Positive;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.Date;
 
-@Getter
+@Data
+@NoArgsConstructor
 public abstract class ListingResponse {
 
-	private final Long id;
+	@Positive
+	private Long id;
 
-	private final String title;
+	@NotBlank
+	private String title;
 
-	private final String description;
+	@NotBlank
+	private String description;
 
-	private final Integer price;
+	@Positive
+	private Integer price;
 
-	private final Long brandId;
+	private Long brandId;
 
-	private final Long modelId;
+	private Long modelId;
 
-	private final Long regionId;
+	private Long regionId;
 
-	private final Long userId;
+	private Long userId;
 
-	private final Integer condition;
+	private Integer conditionId;
 
-	private final Date createdAt;
+	private Date createdAt;
 
-	private final Date updatedAt;
-
-	protected ListingResponse(Listing listing) {
-		this.id = listing.getId();
-		this.title = listing.getTitle();
-		this.description = listing.getDescription();
-		this.price = listing.getPrice();
-		this.brandId = listing.getBrand().getId();
-		this.modelId = listing.getModel().getId();
-		this.regionId = listing.getRegion() != null ? listing.getRegion().getId() : null;
-		this.userId = listing.getUser() != null ? listing.getUser().getId() : null;
-		this.condition = listing.getCondition().ordinal();
-		this.createdAt = listing.getCreatedAt();
-		this.updatedAt = listing.getUpdatedAt();
-	}
+	private Date updatedAt;
 
 }

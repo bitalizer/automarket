@@ -1,6 +1,7 @@
 package com.example.automarket.domain.model;
 
 import com.example.automarket.domain.model.base.BaseEntity;
+import com.example.automarket.domain.model.listing.VehicleModel;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;

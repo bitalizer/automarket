@@ -1,10 +1,7 @@
 package com.example.automarket.domain.model.listing;
 
-import com.example.automarket.domain.ConditionType;
 import com.example.automarket.domain.model.Region;
 import com.example.automarket.domain.model.User;
-import com.example.automarket.domain.model.VehicleBrand;
-import com.example.automarket.domain.model.VehicleModel;
 import com.example.automarket.domain.model.base.BaseEntityAudit;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;

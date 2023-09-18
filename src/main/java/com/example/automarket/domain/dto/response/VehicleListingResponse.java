@@ -1,32 +1,28 @@
 package com.example.automarket.domain.dto.response;
 
 import com.example.automarket.domain.model.listing.vehicle.VehicleCategory;
-import com.example.automarket.domain.model.listing.vehicle.VehicleListing;
 import com.example.automarket.domain.model.listing.vehicle.VehicleSubCategory;
-import lombok.Getter;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
-@Getter
+@EqualsAndHashCode(callSuper = true)
+@ToString(callSuper = true)
+@Data
+public class VehicleListingResponse extends ListingResponse {
 
-public abstract class VehicleListingResponse extends ListingResponse {
+	@Min(1920)
+	@Max(2023)
+	private Integer productionYear;
 
-	private final Integer productionYear;
+	private boolean auction;
 
-	private final boolean auction;
+	private boolean exchangeable;
 
-	private final boolean exchangeable;
+	private VehicleCategory category;
 
-	private final VehicleCategory category;
-
-	private final VehicleSubCategory subCategory;
-
-	protected VehicleListingResponse(VehicleListing listing) {
-		super(listing);
-
-		this.productionYear = listing.getProductionYear();
-		this.auction = listing.isAuction();
-		this.exchangeable = listing.isExchangeable();
-		this.category = listing.getCategory();
-		this.subCategory = listing.getSubCategory();
-	}
+	private VehicleSubCategory subCategory;
 
 }

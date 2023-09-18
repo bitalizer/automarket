@@ -1,4 +1,4 @@
-package com.example.automarket.domain.model.listing;
+package com.example.automarket.domain.model.listing.vehicle;
 
 public interface Loadable {
 

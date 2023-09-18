@@ -1,4 +1,4 @@
-package com.example.automarket.domain;
+package com.example.automarket.domain.model.listing.vehicle;
 
 // @formatter:off
 public enum TransmissionType {

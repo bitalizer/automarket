@@ -1,6 +1,5 @@
 package com.example.automarket.domain.model.listing.vehicle;
 
-import com.example.automarket.domain.model.listing.Loadable;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;

@@ -1,9 +1,7 @@
-package com.example.automarket.domain.model;
+package com.example.automarket.domain.model.listing;
 
 import com.example.automarket.domain.model.base.BaseEntity;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
@@ -19,17 +17,21 @@ import java.util.Objects;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "vehicle_brands")
-public class VehicleBrand extends BaseEntity {
+@Table(name = "vehicle_models")
+public class VehicleModel extends BaseEntity {
 
 	@NotBlank
 	@Size(max = 35)
 	@Column(name = "name", nullable = false)
 	private String name;
 
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "brand_id")
+	private VehicleBrand brand;
+
 	@Override
 	public String toString() {
-		return "VahicleBrand{" + "name='" + name + '\'' + "} ";
+		return "VahicleModel{" + "name='" + name + '\'' + "} ";
 	}
 
 	@Override
@@ -38,7 +40,7 @@ public class VehicleBrand extends BaseEntity {
 			return true;
 		if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o))
 			return false;
-		VehicleBrand user = (VehicleBrand) o;
+		VehicleModel user = (VehicleModel) o;
 		return getId() != null && Objects.equals(getId(), user.getId());
 	}
 
