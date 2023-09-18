@@ -1,8 +1,8 @@
 package com.example.automarket.service.impl;
 
-import com.example.automarket.convert.VehicleListingMapper;
 import com.example.automarket.domain.dto.response.VehicleListingResponse;
 import com.example.automarket.domain.model.listing.vehicle.VehicleListing;
+import com.example.automarket.mapper.VehicleListingMapper;
 import com.example.automarket.repository.VehicleRepository;
 import com.example.automarket.service.VehicleService;
 import lombok.RequiredArgsConstructor;

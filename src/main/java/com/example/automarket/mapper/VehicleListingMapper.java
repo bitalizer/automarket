@@ -1,4 +1,4 @@
-package com.example.automarket.convert;
+package com.example.automarket.mapper;
 
 import com.example.automarket.domain.dto.response.CarListingResponse;
 import com.example.automarket.domain.dto.response.TrailerListingResponse;
