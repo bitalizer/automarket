@@ -15,6 +15,7 @@ public class ModelMapperConfig {
 		ModelMapper modelMapper = new ModelMapper();
 		modelMapper.getConfiguration().setFieldMatchingEnabled(true);
 		modelMapper.getConfiguration().setFieldAccessLevel(PRIVATE);
+		modelMapper.getConfiguration().setAmbiguityIgnored(true);
 		return modelMapper;
 	}
 
