@@ -4,6 +4,7 @@ import com.example.automarket.domain.model.listing.vehicle.VehicleCategory;
 import com.example.automarket.domain.model.listing.vehicle.VehicleSubCategory;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
@@ -21,8 +22,10 @@ public class VehicleListingResponse extends ListingResponse {
 
 	private boolean exchangeable;
 
+	@NotBlank
 	private VehicleCategory category;
 
+	@NotBlank
 	private VehicleSubCategory subCategory;
 
 }

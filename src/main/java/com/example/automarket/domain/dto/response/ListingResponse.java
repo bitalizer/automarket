@@ -1,6 +1,8 @@
 package com.example.automarket.domain.dto.response;
 
+import com.example.automarket.domain.model.listing.ConditionType;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -11,7 +13,7 @@ import java.util.Date;
 @NoArgsConstructor
 public abstract class ListingResponse {
 
-	@Positive
+	@NotNull
 	private Long id;
 
 	@NotBlank
@@ -20,19 +22,25 @@ public abstract class ListingResponse {
 	@NotBlank
 	private String description;
 
+	@NotNull
 	@Positive
 	private Integer price;
 
+	@NotNull
 	private Long brandId;
 
+	@NotNull
 	private Long modelId;
 
 	private Long regionId;
 
+	@NotNull
 	private Long userId;
 
-	private Integer conditionId;
+	@NotNull
+	private ConditionType condition;
 
+	@NotNull
 	private Date createdAt;
 
 	private Date updatedAt;

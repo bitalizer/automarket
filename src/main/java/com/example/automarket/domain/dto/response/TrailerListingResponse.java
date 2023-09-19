@@ -1,5 +1,7 @@
 package com.example.automarket.domain.dto.response;
 
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -7,6 +9,8 @@ import lombok.EqualsAndHashCode;
 @Data
 public class TrailerListingResponse extends VehicleListingResponse {
 
+	@NotNull
+	@Positive
 	private Integer payload;
 
 }

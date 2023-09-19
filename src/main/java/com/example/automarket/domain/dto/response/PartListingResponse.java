@@ -1,5 +1,9 @@
 package com.example.automarket.domain.dto.response;
 
+import com.example.automarket.domain.model.listing.part.DealType;
+import com.example.automarket.domain.model.listing.part.PartAvailability;
+import com.example.automarket.domain.model.listing.part.PartCategory;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -7,10 +11,13 @@ import lombok.EqualsAndHashCode;
 @Data
 public class PartListingResponse extends ListingResponse {
 
-	private int availability;
+	@NotNull
+	private PartAvailability availability;
 
-	private int dealType;
+	@NotNull
+	private DealType dealType;
 
-	private int category;
+	@NotNull
+	private PartCategory category;
 
 }

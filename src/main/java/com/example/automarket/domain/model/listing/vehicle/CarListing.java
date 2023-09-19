@@ -5,11 +5,11 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 import lombok.experimental.SuperBuilder;
 
-@Getter
+@ToString(callSuper = true)
 @NoArgsConstructor
 @SuperBuilder(toBuilder = true)
 @Entity

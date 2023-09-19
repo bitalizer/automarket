@@ -4,9 +4,13 @@ import com.example.automarket.domain.model.listing.Listing;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 import lombok.experimental.SuperBuilder;
 
+@ToString(callSuper = true)
 @Getter
+@Setter
 @NoArgsConstructor
 @SuperBuilder(toBuilder = true)
 @Inheritance(strategy = InheritanceType.JOINED)
