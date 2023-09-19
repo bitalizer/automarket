@@ -3,6 +3,7 @@ package com.example.automarket.domain;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
+// @formatter:off
 @RequiredArgsConstructor
 public enum Permission {
 
@@ -13,8 +14,9 @@ public enum Permission {
     MANAGER_READ("management:read"),
     MANAGER_UPDATE("management:update"),
     MANAGER_CREATE("management:create"),
-    MANAGER_DELETE("management:delete");
+	MANAGER_DELETE("management:delete");
 
-    @Getter
-    private final String permission;
+	@Getter
+	private final String permission;
+
 }

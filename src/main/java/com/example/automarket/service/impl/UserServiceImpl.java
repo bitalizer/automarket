@@ -18,53 +18,45 @@ import java.util.Optional;
 @RequiredArgsConstructor
 @Service
 public class UserServiceImpl implements UserService {
-    private final UserRepository userRepository;
 
-    @Cacheable(value = "users")
-    public List<User> getAllUsers() {
-        return userRepository.findAll();
-    }
+	private final UserRepository userRepository;
 
-    @CacheEvict(value = "users", allEntries = true)
-    @Caching(
-            evict = {
-                    @CacheEvict(value = "users", allEntries = true)
-            },
-            put = {
-                    @CachePut(value = "user-single", key = "#result.id")
-            }
-    )
-    public User createNewUser(User user) {
-        return userRepository.save(user);
-    }
+	@Cacheable(value = "users")
+	public List<User> getAllUsers() {
+		return userRepository.findAll();
+	}
 
-    @Cacheable(value = "user-single", key = "#userId")
-    public Optional<User> getUserById(Long userId) {
-        return userRepository.findById(userId);
-    }
+	@CacheEvict(value = "users", allEntries = true)
+	@Caching(evict = { @CacheEvict(value = "users", allEntries = true) },
+			put = { @CachePut(value = "user-single", key = "#result.id") })
+	public void createNewUser(User user) {
+		userRepository.save(user);
+	}
 
-    @CachePut(value = "user-single", key = "#user.id")
-    public User updateUser(User user, User newUser) {
-        // Update the necessary fields of the user object
-        // user.setName(newUser.getName());
-        // ...
-        return userRepository.save(user);
-    }
+	@Cacheable(value = "user-single", key = "#userId")
+	public Optional<User> getUserById(Long userId) {
+		return userRepository.findById(userId);
+	}
 
-    @Caching(
-            evict = {
-                    @CacheEvict(value = "users", allEntries = true),
-                    @CacheEvict(value = "user-single", key = "#user.id")
-            }
-    )
-    public void deleteUser(User user) {
-        userRepository.delete(user);
-    }
+	@CachePut(value = "user-single", key = "#user.id")
+	public User updateUser(User user, User newUser) {
+		// Update the necessary fields of the user object
+		// user.setName(newUser.getName());
+		// ...
+		return userRepository.save(user);
+	}
 
-    @Override
-    public UserDetailsService userDetailsService() {
+	@Caching(evict = { @CacheEvict(value = "users", allEntries = true),
+			@CacheEvict(value = "user-single", key = "#user.id") })
+	public void deleteUser(User user) {
+		userRepository.delete(user);
+	}
 
-        return email -> userRepository.findByEmail(email)
-                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
-    }
+	@Override
+	public UserDetailsService userDetailsService() {
+
+		return email -> userRepository.findByEmail(email)
+			.orElseThrow(() -> new UsernameNotFoundException("User not found"));
+	}
+
 }

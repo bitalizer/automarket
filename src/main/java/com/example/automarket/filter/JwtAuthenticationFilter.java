@@ -1,6 +1,5 @@
 package com.example.automarket.filter;
 
-import com.example.automarket.repository.TokenRepository;
 import com.example.automarket.service.JwtService;
 import com.example.automarket.service.UserService;
 import jakarta.servlet.FilterChain;
@@ -23,60 +22,51 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
-    private final JwtService jwtService;
-    private final UserService userService;
-    private final TokenRepository tokenRepository;
+	private final JwtService jwtService;
 
-    @Override
-    protected void doFilterInternal(
-            @NonNull HttpServletRequest request,
-            @NonNull HttpServletResponse response,
-            @NonNull FilterChain filterChain
-    ) throws ServletException, IOException {
-        if (request.getServletPath().contains("/api/v1/auth")) {
-            filterChain.doFilter(request, response);
-            return;
-        }
+	private final UserService userService;
 
-        extractJwtFromRequest(request)
-                .ifPresent(jwt -> processAuthentication(jwt, request));
+	@Override
+	protected void doFilterInternal(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response,
+			@NonNull FilterChain filterChain) throws ServletException, IOException {
+		if (request.getServletPath().contains("/api/v1/auth")) {
+			filterChain.doFilter(request, response);
+			return;
+		}
 
-        filterChain.doFilter(request, response);
-    }
+		extractJwtFromRequest(request).ifPresent(jwt -> processAuthentication(jwt, request));
 
-    private Optional<String> extractJwtFromRequest(HttpServletRequest request) {
-        String authHeader = request.getHeader("Authorization");
+		filterChain.doFilter(request, response);
+	}
 
-        if (authHeader != null && authHeader.startsWith("Bearer ")) {
-            return Optional.of(authHeader.substring(7));
-        }
-        return Optional.empty();
-    }
+	private Optional<String> extractJwtFromRequest(HttpServletRequest request) {
+		String authHeader = request.getHeader("Authorization");
 
-    private boolean isTokenValid(String jwt, UserDetails userDetails) {
-        return tokenRepository.findByToken(jwt)
-                .map(token -> !token.isExpired() && !token.isRevoked())
-                .orElse(false) && jwtService.isTokenValid(jwt, userDetails);
-    }
+		if (authHeader != null && authHeader.startsWith("Bearer ")) {
+			return Optional.of(authHeader.substring(7));
+		}
+		return Optional.empty();
+	}
 
-    private void processAuthentication(String jwt, HttpServletRequest request) {
-        String userEmail = jwtService.extractUsername(jwt);
+	private void processAuthentication(String jwt, HttpServletRequest request) {
+		String userEmail = jwtService.extractUsername(jwt);
 
-        if (userEmail == null) {
-            return;
-        }
+		if (userEmail == null) {
+			return;
+		}
 
-        UserDetails userDetails = userService.userDetailsService().loadUserByUsername(userEmail);
+		UserDetails userDetails = userService.userDetailsService().loadUserByUsername(userEmail);
 
-        if (isTokenValid(jwt, userDetails)) {
-            authenticateUser(userDetails, request);
-        }
-    }
+		if (jwtService.isTokenValid(jwt, userDetails)) {
+			authenticateUser(userDetails, request);
+		}
+	}
 
-    private void authenticateUser(UserDetails userDetails, HttpServletRequest request) {
-        UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
-                userDetails, null, userDetails.getAuthorities());
-        authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-        SecurityContextHolder.getContext().setAuthentication(authToken);
-    }
+	private void authenticateUser(UserDetails userDetails, HttpServletRequest request) {
+		UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(userDetails, null,
+				userDetails.getAuthorities());
+		authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+		SecurityContextHolder.getContext().setAuthentication(authToken);
+	}
+
 }

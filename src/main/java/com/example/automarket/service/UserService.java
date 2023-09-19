@@ -7,10 +7,17 @@ import java.util.List;
 import java.util.Optional;
 
 public interface UserService {
-    List<User> getAllUsers();
-    User createNewUser(User user);
-    Optional<User> getUserById(Long userId);
-    User updateUser(User user, User newUser);
-    void deleteUser(User user);
-    UserDetailsService userDetailsService();
+
+	List<User> getAllUsers();
+
+	void createNewUser(User user);
+
+	Optional<User> getUserById(Long userId);
+
+	User updateUser(User user, User newUser);
+
+	void deleteUser(User user);
+
+	UserDetailsService userDetailsService();
+
 }

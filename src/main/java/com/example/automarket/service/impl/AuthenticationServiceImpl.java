@@ -9,7 +9,7 @@ import com.example.automarket.domain.model.User;
 import com.example.automarket.repository.UserRepository;
 import com.example.automarket.service.AuthenticationService;
 import com.example.automarket.service.JwtService;
-import com.example.automarket.service.TokenService;
+import com.example.automarket.service.RefreshTokenService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
@@ -18,91 +18,84 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
+
 @RequiredArgsConstructor
 @Service
 public class AuthenticationServiceImpl implements AuthenticationService {
 
-    private final UserRepository userRepository;
-    private final PasswordEncoder passwordEncoder;
-    private final JwtService jwtService;
-    private final TokenService tokenService;
-    private final AuthenticationManager authenticationManager;
+	private final UserRepository userRepository;
 
-    @Override
-    public JwtAuthenticationResponse register(RegistrationRequest request) {
+	private final PasswordEncoder passwordEncoder;
 
-        if (userRepository.existsByEmail(request.getEmail())) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Email already exists!");
-        }
+	private final JwtService jwtService;
 
-        var user = User.builder()
-                .name(request.getName())
-                .email(request.getEmail())
-                .password(passwordEncoder.encode(request.getPassword()))
-                .role(Role.USER).build();
+	private final RefreshTokenService refreshTokenService;
 
-        var savedUser = userRepository.save(user);
-        var jwtToken = jwtService.generateToken(user);
-        var refreshToken = jwtService.generateRefreshToken(user);
+	private final AuthenticationManager authenticationManager;
 
-        tokenService.saveUserToken(savedUser, jwtToken);
-        tokenService.saveUserToken(savedUser, refreshToken);
+	@Override
+	public JwtAuthenticationResponse register(RegistrationRequest request) {
 
-        return JwtAuthenticationResponse.builder()
-                .accessToken(jwtToken)
-                .refreshToken(refreshToken)
-                .build();
-    }
+		if (userRepository.existsByEmail(request.getEmail())) {
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Email already exists!");
+		}
 
-    @Override
-    public JwtAuthenticationResponse authenticate(AuthenticationRequest request) {
-        authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(
-                        request.getEmail(),
-                        request.getPassword()
-                )
-        );
-        var user = userRepository.findByEmail(request.getEmail())
-                .orElseThrow(() -> new IllegalArgumentException("Invalid email or password."));
-        var jwtToken = jwtService.generateToken(user);
-        var refreshToken = jwtService.generateRefreshToken(user);
-        tokenService.revokeAllUserTokens(user);
-        tokenService.saveUserToken(user, jwtToken);
-        tokenService.saveUserToken(user, refreshToken);
-        return JwtAuthenticationResponse.builder()
-                .accessToken(jwtToken)
-                .refreshToken(refreshToken)
-                .build();
-    }
+		var user = User.builder()
+			.name(request.getName())
+			.email(request.getEmail())
+			.password(passwordEncoder.encode(request.getPassword()))
+			.role(Role.USER)
+			.enabled(true)
+			.build();
 
-    @Override
-    public JwtAuthenticationResponse refreshToken(TokenRefreshRequest request) {
+		var savedUser = userRepository.save(user);
+		var accessToken = jwtService.generateToken(user);
+		var refreshToken = jwtService.generateRefreshToken(user);
 
-        String refreshToken = request.getRefreshToken();
+		refreshTokenService.saveUserToken(savedUser, refreshToken);
 
-        tokenService.findByToken(refreshToken)
-                .orElseThrow(() -> new AuthenticationCredentialsNotFoundException("Refresh token is not in database!"));
+		return JwtAuthenticationResponse.builder().accessToken(accessToken).refreshToken(refreshToken).build();
+	}
 
-        String userEmail = jwtService.extractUsername(refreshToken);
+	@Override
+	public JwtAuthenticationResponse authenticate(AuthenticationRequest request) {
+		authenticationManager
+			.authenticate(new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
 
-        if (userEmail == null) {
-            throw new AuthenticationCredentialsNotFoundException("Cannot extract email!");
-        }
+		var user = userRepository.findByEmail(request.getEmail())
+			.orElseThrow(() -> new IllegalArgumentException("Invalid email or password."));
+		var accessToken = jwtService.generateToken(user);
+		var refreshToken = jwtService.generateRefreshToken(user);
 
-        var user = userRepository.findByEmail(userEmail)
-                .orElseThrow(() -> new AuthenticationCredentialsNotFoundException("E-mail not found!"));
+		refreshTokenService.revokeAllUserTokens(user);
 
-        if (!jwtService.isTokenValid(refreshToken, user)) {
-            throw new AuthenticationCredentialsNotFoundException("Invalid token!");
-        }
+		if (refreshTokenService.findByTokenAndExpiredFalseAndRevokedFalse(refreshToken).isEmpty()) {
+			refreshTokenService.saveUserToken(user, refreshToken);
+		}
 
-        var accessToken = jwtService.generateToken(user);
-        tokenService.revokeAllUserTokens(user);
-        tokenService.saveUserToken(user, accessToken);
+		return JwtAuthenticationResponse.builder().accessToken(accessToken).refreshToken(refreshToken).build();
+	}
 
-        return JwtAuthenticationResponse.builder()
-                .accessToken(accessToken)
-                .refreshToken(refreshToken)
-                .build();
-    }
+	@Override
+	public JwtAuthenticationResponse refreshToken(TokenRefreshRequest request) {
+
+		String refreshToken = request.getRefreshToken();
+
+		String userEmail = jwtService.extractUsername(refreshToken);
+
+		var user = userRepository.findByEmail(userEmail)
+			.orElseThrow(() -> new AuthenticationCredentialsNotFoundException("E-mail not found!"));
+
+		if (!jwtService.isTokenValid(refreshToken, user)) {
+			throw new AuthenticationCredentialsNotFoundException("Invalid token!");
+		}
+
+		refreshTokenService.findByTokenAndExpiredFalseAndRevokedFalse(refreshToken)
+			.orElseThrow(() -> new AuthenticationCredentialsNotFoundException("Refresh token is not in database!"));
+
+		var accessToken = jwtService.generateToken(user);
+
+		return JwtAuthenticationResponse.builder().accessToken(accessToken).refreshToken(refreshToken).build();
+	}
+
 }
