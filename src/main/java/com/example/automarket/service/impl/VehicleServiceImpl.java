@@ -1,5 +1,6 @@
 package com.example.automarket.service.impl;
 
+import com.example.automarket.domain.dto.request.VehicleListingRequest;
 import com.example.automarket.domain.dto.response.VehicleListingResponse;
 import com.example.automarket.domain.model.listing.vehicle.VehicleListing;
 import com.example.automarket.mapper.VehicleListingMapper;
@@ -26,6 +27,15 @@ public class VehicleServiceImpl implements VehicleService {
 
 	public Optional<VehicleListingResponse> getListingById(Long listingId) {
 		return vehicleRepository.findById(listingId).map(mapper::fromEntity);
+	}
+
+	@Override
+	public VehicleListing createListing(VehicleListingRequest listingRequest) {
+
+		VehicleListing listing = mapper.toEntity(listingRequest);
+		vehicleRepository.save(listing);
+
+		return listing;
 	}
 
 	@Override
