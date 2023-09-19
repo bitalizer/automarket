@@ -8,7 +8,6 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RequiredArgsConstructor
 @Validated
@@ -25,28 +24,15 @@ public class PartController {
 
 	@GetMapping("/{id}")
 	public ResponseEntity<PartListingResponse> getListingById(@PathVariable("id") Long listingId) {
-		Optional<PartListingResponse> optionalListingResponse = partService.getListingById(listingId);
-
-		if (optionalListingResponse.isPresent()) {
-			PartListingResponse listingResponse = optionalListingResponse.get();
-			return ResponseEntity.ok(listingResponse);
-		}
-		else {
-			return ResponseEntity.notFound().build();
-		}
+		return partService.getListingById(listingId).map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
 	}
 
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Void> deleteListingById(@PathVariable("id") Long listingId) {
-		Optional<PartListingResponse> optionalListingResponse = partService.getListingById(listingId);
-
-		if (optionalListingResponse.isPresent()) {
+		return partService.getListingById(listingId).map(listingResponse -> {
 			partService.deleteListingById(listingId);
-			return ResponseEntity.noContent().build();
-		}
-		else {
-			return ResponseEntity.notFound().build();
-		}
+			return ResponseEntity.noContent().<Void>build();
+		}).orElse(ResponseEntity.notFound().build());
 	}
 
 }

@@ -11,7 +11,6 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RequiredArgsConstructor
 @Validated
@@ -28,15 +27,9 @@ public class VehicleController {
 
 	@GetMapping("/{id}")
 	public ResponseEntity<VehicleListingResponse> getListingById(@PathVariable("id") Long listingId) {
-		Optional<VehicleListingResponse> optionalListingResponse = vehicleService.getListingById(listingId);
-
-		if (optionalListingResponse.isPresent()) {
-			VehicleListingResponse listingResponse = optionalListingResponse.get();
-			return ResponseEntity.ok(listingResponse);
-		}
-		else {
-			return ResponseEntity.notFound().build();
-		}
+		return vehicleService.getListingById(listingId)
+			.map(ResponseEntity::ok)
+			.orElseGet(() -> ResponseEntity.notFound().build());
 	}
 
 	@PostMapping
@@ -48,15 +41,10 @@ public class VehicleController {
 
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Void> deleteListingById(@PathVariable("id") Long listingId) {
-		Optional<VehicleListingResponse> optionalListingResponse = vehicleService.getListingById(listingId);
-
-		if (optionalListingResponse.isPresent()) {
+		return vehicleService.getListingById(listingId).map(listingResponse -> {
 			vehicleService.deleteListingById(listingId);
-			return ResponseEntity.noContent().build();
-		}
-		else {
-			return ResponseEntity.notFound().build();
-		}
+			return ResponseEntity.noContent().<Void>build();
+		}).orElseGet(() -> ResponseEntity.notFound().build());
 	}
 
 }
