@@ -34,7 +34,7 @@ public class VehicleController {
 
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
-	public ResponseEntity<VehicleListing> getListingById(@RequestBody @Validated VehicleListingRequest listingRequest) {
+	public ResponseEntity<VehicleListing> createListing(@RequestBody @Validated VehicleListingRequest listingRequest) {
 		VehicleListing response = vehicleService.createListing(listingRequest);
 		return ResponseEntity.ok(response);
 	}
