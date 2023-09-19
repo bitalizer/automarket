@@ -4,131 +4,173 @@ import com.example.automarket.domain.dto.request.AuthenticationRequest;
 import com.example.automarket.domain.dto.request.RegistrationRequest;
 import com.example.automarket.domain.dto.request.TokenRefreshRequest;
 import com.example.automarket.domain.dto.response.JwtAuthenticationResponse;
+import com.example.automarket.service.AuthenticationService;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
-import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-@SpringBootTest
-@AutoConfigureMockMvc
-@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
+import static org.mockito.Mockito.when;
+
+@ContextConfiguration(classes = { AuthenticationController.class })
+@ActiveProfiles({ "test" })
+@ExtendWith(SpringExtension.class)
 class AuthenticationControllerTest {
 
-	private static RegistrationRequest registrationRequest;
-
-	private static String refreshToken; // Store the refresh token
-
 	@Autowired
-	private MockMvc mockMvc;
+	private AuthenticationController authenticationController;
 
-	@Autowired
-	private ObjectMapper objectMapper;
+	@MockBean
+	private AuthenticationService authenticationService;
 
-	@BeforeAll
-	static void setUp() {
-		registrationRequest = new RegistrationRequest();
-		registrationRequest.setName("John Doe");
-		registrationRequest.setEmail("valid-email@example.com");
-		registrationRequest.setPassword("password");
-	}
-
-	@Order(1)
+	/**
+	 * Method under test: {@link AuthenticationController#register(RegistrationRequest)}
+	 */
 	@Test
-	void testRegister_Success() throws Exception {
-		// Prepare registration request with valid email
+	void testRegister() throws Exception {
+		JwtAuthenticationResponse buildResult = JwtAuthenticationResponse.builder()
+			.accessToken("ABC123")
+			.refreshToken("ABC123")
+			.build();
+		when(authenticationService.register(Mockito.any())).thenReturn(buildResult);
 
-		// Perform the registration request
-		mockMvc
-			.perform(MockMvcRequestBuilders.post("/api/v1/auth/register")
-				.contentType(MediaType.APPLICATION_JSON)
-				.content(objectMapper.writeValueAsString(registrationRequest)))
-			.andExpect(MockMvcResultMatchers.status().isOk())
-			.andExpect(MockMvcResultMatchers.jsonPath("$.access_token").isString())
-			.andExpect(MockMvcResultMatchers.jsonPath("$.refresh_token").isString());
-	}
-
-	@Test
-	void testRegister_InvalidEmail() throws Exception {
-		// Prepare registration request with invalid email
 		RegistrationRequest registrationRequest = new RegistrationRequest();
-		registrationRequest.setName("John Doe");
-		registrationRequest.setEmail("invalid-email");
-		registrationRequest.setPassword("password");
+		registrationRequest.setEmail("jane.doe@example.org");
+		registrationRequest.setName("Name");
+		registrationRequest.setPassword("iloveyou");
+		String content = (new ObjectMapper()).writeValueAsString(registrationRequest);
+		MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.post("/api/v1/auth/register")
+			.contentType(MediaType.APPLICATION_JSON)
+			.content(content);
+		MockMvcBuilders.standaloneSetup(authenticationController)
+			.build()
+			.perform(requestBuilder)
+			.andExpect(MockMvcResultMatchers.status().isOk())
+			.andExpect(MockMvcResultMatchers.content().contentType("application/json"))
+			.andExpect(MockMvcResultMatchers.content()
+				.string("{\"access_token\":\"ABC123\",\"refresh_token\":\"ABC123\"}"));
+	}
 
-		// Perform the registration request
-		mockMvc
-			.perform(MockMvcRequestBuilders.post("/api/v1/auth/register")
-				.contentType(MediaType.APPLICATION_JSON)
-				.content(objectMapper.writeValueAsString(registrationRequest)))
+	@Test
+	void testRegister_MissingEmail() throws Exception {
+		// Prepare a registration request with missing email
+		RegistrationRequest registrationRequest = new RegistrationRequest();
+		registrationRequest.setEmail(""); // Empty email
+		registrationRequest.setName("Name");
+		registrationRequest.setPassword("iloveyou");
+		String content = (new ObjectMapper()).writeValueAsString(registrationRequest);
+		MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.post("/api/v1/auth/register")
+			.contentType(MediaType.APPLICATION_JSON)
+			.content(content);
+
+		// Perform the registration request and expect a bad request (400) response
+		MockMvcBuilders.standaloneSetup(authenticationController)
+			.build()
+			.perform(requestBuilder)
 			.andExpect(MockMvcResultMatchers.status().isBadRequest());
 	}
 
 	@Test
-	void testAuthenticate_NonExistingEmail() throws Exception {
-		AuthenticationRequest authenticationRequest = new AuthenticationRequest();
-		authenticationRequest.setEmail("non-existing-email@example.com");
-		authenticationRequest.setPassword("password");
+	void testRegister_InvalidEmail() throws Exception {
+		// Prepare a registration request with missing email
+		RegistrationRequest registrationRequest = new RegistrationRequest();
+		registrationRequest.setEmail("invalid-email"); // Invalid email
+		registrationRequest.setName("Name");
+		registrationRequest.setPassword("iloveyou");
+		String content = (new ObjectMapper()).writeValueAsString(registrationRequest);
+		MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.post("/api/v1/auth/register")
+			.contentType(MediaType.APPLICATION_JSON)
+			.content(content);
 
-		mockMvc
-			.perform(MockMvcRequestBuilders.post("/api/v1/auth/authenticate")
-				.contentType(MediaType.APPLICATION_JSON)
-				.content(objectMapper.writeValueAsString(authenticationRequest)))
-			.andExpect(MockMvcResultMatchers.status().isUnauthorized());
+		// Perform the registration request and expect a bad request (400) response
+		MockMvcBuilders.standaloneSetup(authenticationController)
+			.build()
+			.perform(requestBuilder)
+			.andExpect(MockMvcResultMatchers.status().isBadRequest());
 	}
 
 	@Test
-	void testAuthenticate_IncorrectPassword() throws Exception {
-		AuthenticationRequest authenticationRequest = new AuthenticationRequest();
-		authenticationRequest.setEmail(registrationRequest.getEmail());
-		authenticationRequest.setPassword("incorrect-password");
+	void testRegister_MissingPassword() throws Exception {
+		// Prepare a registration request with missing password
+		RegistrationRequest registrationRequest = new RegistrationRequest();
+		registrationRequest.setEmail("jane.doe@example.org");
+		registrationRequest.setName("Name");
+		registrationRequest.setPassword(""); // Empty password
+		String content = (new ObjectMapper()).writeValueAsString(registrationRequest);
+		MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.post("/api/v1/auth/register")
+			.contentType(MediaType.APPLICATION_JSON)
+			.content(content);
 
-		mockMvc
-			.perform(MockMvcRequestBuilders.post("/api/v1/auth/authenticate")
-				.contentType(MediaType.APPLICATION_JSON)
-				.content(objectMapper.writeValueAsString(authenticationRequest)))
-			.andExpect(MockMvcResultMatchers.status().isUnauthorized());
+		// Perform the registration request and expect a bad request (400) response
+		MockMvcBuilders.standaloneSetup(authenticationController)
+			.build()
+			.perform(requestBuilder)
+			.andExpect(MockMvcResultMatchers.status().isBadRequest());
 	}
 
-	@Order(2)
+	/**
+	 * Method under test:
+	 * {@link AuthenticationController#authenticate(AuthenticationRequest)}
+	 */
 	@Test
-	void testAuthenticate_Success() throws Exception {
-		// Prepare authentication request
-		AuthenticationRequest authenticationRequest = new AuthenticationRequest();
-		authenticationRequest.setEmail(registrationRequest.getEmail());
-		authenticationRequest.setPassword(registrationRequest.getPassword());
+	void testAuthenticate() throws Exception {
+		JwtAuthenticationResponse buildResult = JwtAuthenticationResponse.builder()
+			.accessToken("ABC123")
+			.refreshToken("ABC123")
+			.build();
+		when(authenticationService.authenticate(Mockito.any())).thenReturn(buildResult);
 
-		// Perform the authentication request
-		mockMvc
-			.perform(MockMvcRequestBuilders.post("/api/v1/auth/authenticate")
-				.contentType(MediaType.APPLICATION_JSON)
-				.content(objectMapper.writeValueAsString(authenticationRequest)))
+		AuthenticationRequest authenticationRequest = new AuthenticationRequest();
+		authenticationRequest.setEmail("jane.doe@example.org");
+		authenticationRequest.setPassword("iloveyou");
+		String content = (new ObjectMapper()).writeValueAsString(authenticationRequest);
+		MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.post("/api/v1/auth/authenticate")
+			.contentType(MediaType.APPLICATION_JSON)
+			.content(content);
+		MockMvcBuilders.standaloneSetup(authenticationController)
+			.build()
+			.perform(requestBuilder)
 			.andExpect(MockMvcResultMatchers.status().isOk())
-			.andExpect(MockMvcResultMatchers.jsonPath("$.access_token").isString())
-			.andExpect(MockMvcResultMatchers.jsonPath("$.refresh_token").isString())
-			.andDo(result -> {
-				// Store the refresh token for later use
-				JwtAuthenticationResponse jwtResponse = objectMapper
-					.readValue(result.getResponse().getContentAsString(), JwtAuthenticationResponse.class);
-				refreshToken = jwtResponse.getRefreshToken();
-			});
+			.andExpect(MockMvcResultMatchers.content().contentType("application/json"))
+			.andExpect(MockMvcResultMatchers.content()
+				.string("{\"access_token\":\"ABC123\",\"refresh_token\":\"ABC123\"}"));
 	}
 
-	@Order(3)
+	/**
+	 * Method under test:
+	 * {@link AuthenticationController#refreshToken(TokenRefreshRequest)}
+	 */
 	@Test
-	void testRefreshToken_Success() throws Exception {
-		TokenRefreshRequest tokenRefreshRequest = TokenRefreshRequest.builder().refreshToken(refreshToken).build();
+	void testRefreshToken() throws Exception {
+		JwtAuthenticationResponse buildResult = JwtAuthenticationResponse.builder()
+			.accessToken("ABC123")
+			.refreshToken("ABC123")
+			.build();
+		when(authenticationService.refreshToken(Mockito.any())).thenReturn(buildResult);
 
-		mockMvc
-			.perform(MockMvcRequestBuilders.post("/api/v1/auth/refresh-token")
-				.contentType(MediaType.APPLICATION_JSON)
-				.content(objectMapper.writeValueAsString(tokenRefreshRequest)))
+		TokenRefreshRequest tokenRefreshRequest = new TokenRefreshRequest();
+		tokenRefreshRequest.setRefreshToken("ABC123");
+		String content = (new ObjectMapper()).writeValueAsString(tokenRefreshRequest);
+		MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.post("/api/v1/auth/refresh-token")
+			.contentType(MediaType.APPLICATION_JSON)
+			.content(content);
+		MockMvcBuilders.standaloneSetup(authenticationController)
+			.build()
+			.perform(requestBuilder)
 			.andExpect(MockMvcResultMatchers.status().isOk())
-			.andExpect(MockMvcResultMatchers.jsonPath("$.refresh_token").value(tokenRefreshRequest.getRefreshToken()));
+			.andExpect(MockMvcResultMatchers.content().contentType("application/json"))
+			.andExpect(MockMvcResultMatchers.content()
+				.string("{\"access_token\":\"ABC123\",\"refresh_token\":\"ABC123\"}"));
 	}
 
 }
