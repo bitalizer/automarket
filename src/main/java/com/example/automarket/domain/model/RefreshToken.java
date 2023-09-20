@@ -27,6 +27,7 @@ public class RefreshToken {
 	private String token;
 
 	@Enumerated(EnumType.STRING)
+	@Builder.Default
 	private TokenType tokenType = TokenType.BEARER;
 
 	private boolean revoked;
