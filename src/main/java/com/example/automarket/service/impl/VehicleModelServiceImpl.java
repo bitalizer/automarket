@@ -15,14 +15,14 @@ import java.util.List;
 @Service
 public class VehicleModelServiceImpl implements VehicleModelService {
 
-    private final VehicleModelRepository vehicleModelRepository;
+	private final VehicleModelRepository vehicleModelRepository;
 
-    private final ModelMapper mapper;
+	private final ModelMapper mapper;
 
-    @Override
-    public List<VehicleModelResponse> getAllModels(Specification<VehicleModel> spec) {
-        List<VehicleModel> vehicleModels = vehicleModelRepository.findAll(spec);
-        return vehicleModels.stream().map(model -> mapper.map(model, VehicleModelResponse.class)).toList();
-    }
+	@Override
+	public List<VehicleModelResponse> getAllModels(Specification<VehicleModel> spec) {
+		List<VehicleModel> vehicleModels = vehicleModelRepository.findAll(spec);
+		return vehicleModels.stream().map(model -> mapper.map(model, VehicleModelResponse.class)).toList();
+	}
 
 }

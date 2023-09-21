@@ -5,7 +5,7 @@ import lombok.Getter;
 @Getter
 public enum VehicleCategory {
 
-    // @formatter:off
+	// @formatter:off
 	PASSENGER_CAR,
 	SUV,
 	COMMERCIAL_VEHICLE,
@@ -20,10 +20,10 @@ public enum VehicleCategory {
 	OTHER;
 	// @formatter:on
 
-    private final int id;
+	private final int id;
 
-    VehicleCategory() {
-        this.id = ordinal();
-    }
+	VehicleCategory() {
+		this.id = ordinal();
+	}
 
 }

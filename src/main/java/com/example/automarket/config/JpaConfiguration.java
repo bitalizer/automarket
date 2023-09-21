@@ -12,9 +12,9 @@ import java.util.List;
 @EnableTransactionManagement
 public class JpaConfiguration implements WebMvcConfigurer {
 
-    @Override
-    public void addArgumentResolvers(List<HandlerMethodArgumentResolver> argumentResolvers) {
-        argumentResolvers.add(new SpecificationArgumentResolver());
-    }
+	@Override
+	public void addArgumentResolvers(List<HandlerMethodArgumentResolver> argumentResolvers) {
+		argumentResolvers.add(new SpecificationArgumentResolver());
+	}
 
 }

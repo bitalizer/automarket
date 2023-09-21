@@ -7,9 +7,10 @@ import lombok.Data;
 @Data
 public class VehicleModelResponse {
 
-    @NotNull
-    private Integer id;
+	@NotNull
+	private Integer id;
 
-    @NotBlank
-    private String name;
+	@NotBlank
+	private String name;
+
 }

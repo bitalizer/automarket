@@ -21,12 +21,12 @@ import java.util.List;
 @RequestMapping("/api/v1/models")
 public class VehicleModelController {
 
-    private final VehicleModelService vehicleModelService;
+	private final VehicleModelService vehicleModelService;
 
-    @GetMapping
-    public List<VehicleModelResponse> getModels(@And({
-            @Spec(path = "brand.name", params = "brand", spec = LikeIgnoreCase.class)}) Specification<VehicleModel> spec) {
-        return vehicleModelService.getAllModels(spec);
-    }
+	@GetMapping
+	public List<VehicleModelResponse> getModels(@And({ @Spec(path = "brand.name", params = "brand",
+			spec = LikeIgnoreCase.class) }) Specification<VehicleModel> spec) {
+		return vehicleModelService.getAllModels(spec);
+	}
 
 }
