@@ -26,7 +26,7 @@ public class VehicleModelController {
 	private final VehicleModelService vehicleModelService;
 
 	@GetMapping
-	@Cacheable(value = "models", key = "#brand != null")
+	@Cacheable(value = "models", key = "#brand", condition = "#brand != null")
 	public List<VehicleModelResponse> getModels(@RequestParam(name = "brand", required = false) String brand,
 			@And({ @Spec(path = "brand.name", params = "brand",
 					spec = LikeIgnoreCase.class) }) Specification<VehicleModel> spec) {
