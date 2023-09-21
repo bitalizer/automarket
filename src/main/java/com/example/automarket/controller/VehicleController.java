@@ -10,6 +10,8 @@ import net.kaczmarzyk.spring.data.jpa.domain.Between;
 import net.kaczmarzyk.spring.data.jpa.domain.Equal;
 import net.kaczmarzyk.spring.data.jpa.web.annotation.And;
 import net.kaczmarzyk.spring.data.jpa.web.annotation.Spec;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
@@ -54,6 +56,7 @@ public class VehicleController {
 	}
 
 	@GetMapping("/{id}")
+	@Cacheable(value = "vehicles", key = "#listingId")
 	public ResponseEntity<VehicleListingResponse> getListingById(@PathVariable("id") Long listingId) {
 		return vehicleService.getListingById(listingId)
 			.map(ResponseEntity::ok)
@@ -67,6 +70,7 @@ public class VehicleController {
 		return ResponseEntity.ok(response);
 	}
 
+	@CacheEvict(cacheNames = "vehicles", key = "#listingId")
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Void> deleteListingById(@PathVariable("id") Long listingId) {
 		return vehicleService.getListingById(listingId).map(listingResponse -> {

@@ -7,10 +7,12 @@ import lombok.RequiredArgsConstructor;
 import net.kaczmarzyk.spring.data.jpa.domain.LikeIgnoreCase;
 import net.kaczmarzyk.spring.data.jpa.web.annotation.And;
 import net.kaczmarzyk.spring.data.jpa.web.annotation.Spec;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -24,8 +26,10 @@ public class VehicleModelController {
 	private final VehicleModelService vehicleModelService;
 
 	@GetMapping
-	public List<VehicleModelResponse> getModels(@And({ @Spec(path = "brand.name", params = "brand",
-			spec = LikeIgnoreCase.class) }) Specification<VehicleModel> spec) {
+	@Cacheable(value = "models", key = "#brand != null")
+	public List<VehicleModelResponse> getModels(@RequestParam(name = "brand", required = false) String brand,
+			@And({ @Spec(path = "brand.name", params = "brand",
+					spec = LikeIgnoreCase.class) }) Specification<VehicleModel> spec) {
 		return vehicleModelService.getAllModels(spec);
 	}
 
