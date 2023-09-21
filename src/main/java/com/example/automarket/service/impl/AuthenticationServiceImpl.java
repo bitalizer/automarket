@@ -17,6 +17,8 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
 @RequiredArgsConstructor
@@ -34,6 +36,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 	private final AuthenticationManager authenticationManager;
 
 	@Override
+	@Transactional(isolation = Isolation.READ_COMMITTED)
 	public JwtAuthenticationResponse register(RegistrationRequest request) {
 
 		if (userRepository.existsByEmail(request.getEmail())) {
@@ -58,6 +61,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 	}
 
 	@Override
+	@Transactional(isolation = Isolation.READ_COMMITTED)
 	public JwtAuthenticationResponse authenticate(AuthenticationRequest request) {
 		authenticationManager
 			.authenticate(new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
@@ -77,6 +81,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 	}
 
 	@Override
+	@Transactional(isolation = Isolation.READ_COMMITTED)
 	public JwtAuthenticationResponse refreshToken(TokenRefreshRequest request) {
 
 		String refreshToken = request.getRefreshToken();
@@ -91,7 +96,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 		}
 
 		refreshTokenService.findByTokenAndExpiredFalseAndRevokedFalse(refreshToken)
-			.orElseThrow(() -> new AuthenticationCredentialsNotFoundException("Refresh token is not in database!"));
+			.orElseThrow(() -> new AuthenticationCredentialsNotFoundException("Refresh token is not in the database!"));
 
 		var accessToken = jwtService.generateToken(user);
 
