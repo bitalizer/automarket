@@ -3,8 +3,8 @@ package com.example.automarket.domain.model.listing.vehicle;
 import lombok.Getter;
 
 @Getter
-// @formatter:off
 public enum VehicleSubCategory {
+    // @formatter:off
 	// Passenger Car Subcategories
 	SEDAN(VehicleCategory.PASSENGER_CAR),
 	HATCHBACK(VehicleCategory.PASSENGER_CAR),
@@ -84,18 +84,19 @@ public enum VehicleSubCategory {
 
 	// Other Subcategories
 	OTHER(VehicleCategory.OTHER);
+	// @formatter:on
 
-	private final int id;
+    private final int id;
 
-	private final VehicleCategory category;
+    private final VehicleCategory category;
 
-	VehicleSubCategory(VehicleCategory category) {
-		this.id = ordinal();
-		this.category = category;
-	}
+    VehicleSubCategory(VehicleCategory category) {
+        this.id = ordinal();
+        this.category = category;
+    }
 
-	public VehicleCategory getCategory() {
-		return category;
-	}
+    public VehicleCategory getCategory() {
+        return category;
+    }
 
 }

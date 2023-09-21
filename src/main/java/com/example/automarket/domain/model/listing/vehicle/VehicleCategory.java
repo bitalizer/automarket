@@ -5,13 +5,25 @@ import lombok.Getter;
 @Getter
 public enum VehicleCategory {
 
-	PASSENGER_CAR, SUV, COMMERCIAL_VEHICLE, MOTORCYCLE, WATERCRAFT, TRAILER, CARAVAN, CONSTRUCTION_MACHINERY,
-	AGRICULTURAL_MACHINERY, FOREST_MACHINERY, COMMUNAL_MACHINERY, OTHER;
+    // @formatter:off
+	PASSENGER_CAR,
+	SUV,
+	COMMERCIAL_VEHICLE,
+	MOTORCYCLE,
+	WATERCRAFT,
+	TRAILER,
+	CARAVAN,
+	CONSTRUCTION_MACHINERY,
+	AGRICULTURAL_MACHINERY,
+	FOREST_MACHINERY,
+	COMMUNAL_MACHINERY,
+	OTHER;
+	// @formatter:on
 
-	private final int id;
+    private final int id;
 
-	VehicleCategory() {
-		this.id = ordinal();
-	}
+    VehicleCategory() {
+        this.id = ordinal();
+    }
 
 }
