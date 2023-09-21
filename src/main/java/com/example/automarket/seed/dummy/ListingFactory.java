@@ -19,6 +19,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
+import java.util.Date;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -73,11 +74,16 @@ public class ListingFactory implements DummyFactory<Listing> {
 		Region region = randomGenerator.getRandomElement(regions);
 		VehicleModel model = randomGenerator.getRandomElement(models);
 
+		VehicleSubCategory[] subCategories = { VehicleSubCategory.SEDAN, VehicleSubCategory.CABRIOLET,
+				VehicleSubCategory.SUV_TOURING, VehicleSubCategory.SUV_PICKUP };
+		VehicleSubCategory randomSubCategory = randomGenerator.getRandomElement(List.of(subCategories));
+
 		return CarListing.builder()
 			.title(String.format("%s %s", model.getBrand().getName(), model.getName()))
 			.description("some car description")
 			.plateNumber(String.format("%s%s", randomGenerator.getRandomUppercaseString(3),
 					randomGenerator.getRandomInt(100, 999)))
+			.vinCode(randomGenerator.getRandomUppercaseString(17))
 			.price(randomGenerator.getRandomInt(800, 22000))
 			.user(user)
 			.region(region)
@@ -86,12 +92,14 @@ public class ListingFactory implements DummyFactory<Listing> {
 			.mileage(randomGenerator.getRandomInt(25_000, 300_000))
 			.productionYear(randomGenerator.getRandomInt(1998, 2023))
 			.condition(randomGenerator.getRandomBoolean() ? ConditionType.USED : ConditionType.DAMAGED)
+			.createdAt(new Date())
+			.updatedAt(new Date())
 			.auction(randomGenerator.getRandomBoolean())
 			.fuelType(FuelType.DIESEL)
 			.transmissionType(TransmissionType.AUTOMATIC)
 			.driveType(DriveType.FRONT_WHEEL_DRIVE)
-			.category(VehicleCategory.PASSENGER_CAR)
-			.subCategory(VehicleSubCategory.SEDAN)
+			.category(randomSubCategory.getCategory())
+			.subCategory(randomSubCategory)
 			.build();
 	}
 
@@ -111,11 +119,13 @@ public class ListingFactory implements DummyFactory<Listing> {
 			.region(region)
 			.brand(model.getBrand())
 			.model(model)
+			.condition(randomGenerator.getRandomBoolean() ? ConditionType.USED : ConditionType.RESTORED)
 			.productionYear(randomGenerator.getRandomInt(1998, 2023))
+			.createdAt(new Date())
+			.updatedAt(new Date())
 			.payload(payload)
 			.category(VehicleCategory.TRAILER)
 			.subCategory(VehicleSubCategory.TRAILER_LIGHT_TRAILER)
-			.condition(randomGenerator.getRandomBoolean() ? ConditionType.USED : ConditionType.RESTORED)
 			.build();
 	}
 
