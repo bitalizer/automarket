@@ -17,7 +17,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
@@ -43,11 +43,11 @@ class VehicleListingMapperTest {
 	public static void setUp() {
 		// Initialize mock instances of VehicleBrand, VehicleModel, and Region
 		brand = mock(VehicleBrand.class);
-		when(brand.getName()).thenReturn("Toyota");
+		when(brand.getTitle()).thenReturn("Toyota");
 		when(brand.getId()).thenReturn(1L);
 
 		model = mock(VehicleModel.class);
-		when(model.getName()).thenReturn("Camry");
+		when(model.getTitle()).thenReturn("Camry");
 		when(brand.getId()).thenReturn(1L);
 
 		region = mock(Region.class);
@@ -70,8 +70,8 @@ class VehicleListingMapperTest {
 			.region(region)
 			.user(user)
 			.condition(ConditionType.USED)
-			.createdAt(new Date())
-			.updatedAt(new Date())
+			.createdAt(LocalDateTime.now())
+			.updatedAt(LocalDateTime.now())
 			.productionYear(2015)
 			.auction(false)
 			.category(VehicleCategory.PASSENGER_CAR)

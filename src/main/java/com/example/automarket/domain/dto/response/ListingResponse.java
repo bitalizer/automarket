@@ -7,7 +7,7 @@ import jakarta.validation.constraints.Positive;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @Data
 @NoArgsConstructor
@@ -41,8 +41,8 @@ public abstract class ListingResponse {
 	private ConditionType condition;
 
 	@NotNull
-	private Date createdAt;
+	private LocalDateTime createdAt;
 
-	private Date updatedAt;
+	private LocalDateTime updatedAt;
 
 }
