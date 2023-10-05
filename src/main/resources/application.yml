@@ -1,0 +1,36 @@
+server:
+  error:
+    include-message: always
+    include-binding-errors: always
+    include-exception: false
+    include-stacktrace: never
+    include-path: never
+    include-code: never
+    include-timestamp: always
+    include-binding-errors-field: false
+logging:
+  level:
+    org:
+      springframework:
+        security: WARN
+spring:
+  main:
+    banner-mode: "off"
+  datasource:
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: none
+    database: postgresql
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+  liquibase:
+    enabled: true
+    change-log: classpath:changelog/changelog.xml
+application:
+  security:
+    jwt:
+      secret-key: ${JWT_SECRET}
+      expiration: 86400000 # a day
+      refresh-token:
+        expiration: 604800000 # 7 days
