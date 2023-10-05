@@ -20,11 +20,8 @@ import java.util.stream.IntStream;
 @RequiredArgsConstructor
 @Lazy
 @Component
-
 @Profile("dev")
 public class ListingSeeder {
-
-	private final VehicleRepository repository;
 
 	private final ListingFactory factory;
 
