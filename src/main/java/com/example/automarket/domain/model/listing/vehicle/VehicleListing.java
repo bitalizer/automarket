@@ -13,6 +13,7 @@ import lombok.experimental.SuperBuilder;
 @Setter
 @NoArgsConstructor
 @SuperBuilder(toBuilder = true)
+@Table(name = "vehicle_listings")
 @Inheritance(strategy = InheritanceType.JOINED)
 @Entity
 public abstract class VehicleListing extends Listing {
