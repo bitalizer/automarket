@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.23.xsd"
+        objectQuotingStrategy="QUOTE_ONLY_RESERVED_WORDS">
+    <changeSet id="1696522273168-1" author="bitalizer">
+        <addUniqueConstraint columnNames="email" constraintName="uc_users_email" tableName="users"/>
+    </changeSet>
+    <changeSet id="1696522273168-2" author="bitalizer">
+        <addUniqueConstraint columnNames="token" constraintName="uc_refresh_tokens_token" tableName="refresh_tokens"/>
+    </changeSet>
+    <changeSet id="1696522273168-3" author="bitalizer">
+        <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="refresh_tokens"
+                                 constraintName="FK_REFRESH_TOKENS_ON_USER" referencedColumnNames="id"
+                                 referencedTableName="users"/>
+    </changeSet>
+    <changeSet id="1696522273168-4" author="bitalizer">
+        <addForeignKeyConstraint baseColumnNames="brand_id" baseTableName="vehicle_models"
+                                 constraintName="FK_VEHICLE_MODELS_ON_BRAND" referencedColumnNames="id"
+                                 referencedTableName="vehicle_brands"/>
+    </changeSet>
+    <changeSet id="1696522273168-5" author="bitalizer">
+        <addForeignKeyConstraint baseColumnNames="brand_id" baseTableName="vehicle_listings"
+                                 constraintName="FK_VEHICLE_LISTINGS_ON_BRAND" referencedColumnNames="id"
+                                 referencedTableName="vehicle_brands"/>
+    </changeSet>
+    <changeSet id="1696522273168-6" author="bitalizer">
+        <addForeignKeyConstraint baseColumnNames="model_id" baseTableName="vehicle_listings"
+                                 constraintName="FK_VEHICLE_LISTINGS_ON_MODEL" referencedColumnNames="id"
+                                 referencedTableName="vehicle_models"/>
+    </changeSet>
+    <changeSet id="1696522273168-7" author="bitalizer">
+        <addForeignKeyConstraint baseColumnNames="region_id" baseTableName="vehicle_listings"
+                                 constraintName="FK_VEHICLE_LISTINGS_ON_REGION" referencedColumnNames="id"
+                                 referencedTableName="regions"/>
+    </changeSet>
+    <changeSet id="1696522273168-8" author="bitalizer">
+        <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="vehicle_listings"
+                                 constraintName="FK_VEHICLE_LISTINGS_ON_USER" referencedColumnNames="id"
+                                 referencedTableName="users"/>
+    </changeSet>
+    <changeSet id="1696522273168-9" author="bitalizer">
+        <addForeignKeyConstraint baseColumnNames="brand_id" baseTableName="part_listings"
+                                 constraintName="FK_PART_LISTINGS_ON_BRAND" referencedColumnNames="id"
+                                 referencedTableName="vehicle_brands"/>
+    </changeSet>
+    <changeSet id="1696522273168-10" author="bitalizer">
+        <addForeignKeyConstraint baseColumnNames="model_id" baseTableName="part_listings"
+                                 constraintName="FK_PART_LISTINGS_ON_MODEL" referencedColumnNames="id"
+                                 referencedTableName="vehicle_models"/>
+    </changeSet>
+    <changeSet id="1696522273168-11" author="bitalizer">
+        <addForeignKeyConstraint baseColumnNames="region_id" baseTableName="part_listings"
+                                 constraintName="FK_PART_LISTINGS_ON_REGION" referencedColumnNames="id"
+                                 referencedTableName="regions"/>
+    </changeSet>
+    <changeSet id="1696522273168-12" author="bitalizer">
+        <addForeignKeyConstraint baseColumnNames="id" baseTableName="car_listings"
+                                 constraintName="FK_CAR_LISTINGS_ON_ID" referencedColumnNames="id"
+                                 referencedTableName="vehicle_listings"/>
+    </changeSet>
+    <changeSet id="1696522273168-13" author="bitalizer">
+        <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="part_listings"
+                                 constraintName="FK_PART_LISTINGS_ON_USER" referencedColumnNames="id"
+                                 referencedTableName="users"/>
+    </changeSet>
+    <changeSet id="1696522273168-14" author="bitalizer">
+        <addForeignKeyConstraint baseColumnNames="id" baseTableName="trailer_listings"
+                                 constraintName="FK_TRAILER_LISTINGS_ON_ID" referencedColumnNames="id"
+                                 referencedTableName="vehicle_listings"/>
+    </changeSet>
+
+</databaseChangeLog>
