@@ -24,12 +24,17 @@ public class VehicleBrand extends BaseEntity {
 
 	@NotBlank
 	@Size(max = 35)
-	@Column(name = "name", nullable = false)
-	private String name;
+	@Column(name = "code", nullable = false)
+	private String code;
+
+	@NotBlank
+	@Size(max = 35)
+	@Column(name = "title", nullable = false)
+	private String title;
 
 	@Override
 	public String toString() {
-		return "VahicleBrand{" + "name='" + name + '\'' + "} ";
+		return "VahicleBrand{" + "name='" + title + '\'' + "} ";
 	}
 
 	@Override

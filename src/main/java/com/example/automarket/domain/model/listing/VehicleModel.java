@@ -22,8 +22,13 @@ public class VehicleModel extends BaseEntity {
 
 	@NotBlank
 	@Size(max = 35)
-	@Column(name = "name", nullable = false)
-	private String name;
+	@Column(name = "code", nullable = false)
+	private String code;
+
+	@NotBlank
+	@Size(max = 50)
+	@Column(name = "title", nullable = false)
+	private String title;
 
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "brand_id")
@@ -31,7 +36,7 @@ public class VehicleModel extends BaseEntity {
 
 	@Override
 	public String toString() {
-		return "VahicleModel{" + "name='" + name + '\'' + "} ";
+		return "VahicleModel{" + "name='" + title + '\'' + "} ";
 	}
 
 	@Override
