@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.23.xsd"
+        objectQuotingStrategy="QUOTE_ONLY_RESERVED_WORDS">
+    <changeSet id="1696522273170-1" author="bitalizer">
+        <loadData
+                relativeToChangelogFile="true"
+                file="csv/vehicle_models.csv"
+                tableName="vehicle_models">
+            <column name="id" type="NUMERIC"/>
+            <column name="brand_id" type="NUMERIC"/>
+            <column name="code" type="STRING"/>
+            <column name="title" type="STRING"/>
+        </loadData>
+    </changeSet>
+</databaseChangeLog>
