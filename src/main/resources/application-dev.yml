@@ -15,23 +15,26 @@ logging:
         security: DEBUG
 
 spring:
+  sql:
+    init:
+      data-locations: classpath:data-dev.sql
   main:
     banner-mode: "off"
   datasource:
-    url: jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:5432}/${DB_NAME:automarket}
-    username: ${DB_USER:postgres}
-    password: ${DB_PASSWORD:password}
     driver-class-name: org.postgresql.Driver
   jpa:
+    open-in-view: false
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: none
     show-sql: false
     properties:
       hibernate:
         format_sql: true
     database: postgresql
     database-platform: org.hibernate.dialect.PostgreSQLDialect
-
+  liquibase:
+    enabled: true
+    change-log: classpath:changelog/changelog.xml
 application:
   security:
     jwt:

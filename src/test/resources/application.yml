@@ -13,7 +13,6 @@ logging:
     org:
       springframework:
         security: DEBUG
-
 spring:
   main:
     banner-mode: "off"
@@ -33,7 +32,8 @@ spring:
       hibernate:
         format_sql: true
     database-platform: org.hibernate.dialect.H2Dialect
-
+  liquibase:
+    enabled: false
 application:
   security:
     jwt:
