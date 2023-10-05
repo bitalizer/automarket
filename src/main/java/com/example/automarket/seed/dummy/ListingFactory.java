@@ -17,14 +17,16 @@ import com.example.automarket.service.RandomGenerator;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RequiredArgsConstructor
 @Lazy
 @Component
+@Profile("dev")
 @Slf4j
 public class ListingFactory implements DummyFactory<Listing> {
 
@@ -79,7 +81,7 @@ public class ListingFactory implements DummyFactory<Listing> {
 		VehicleSubCategory randomSubCategory = randomGenerator.getRandomElement(List.of(subCategories));
 
 		return CarListing.builder()
-			.title(String.format("%s %s", model.getBrand().getName(), model.getName()))
+			.title(String.format("%s %s", model.getBrand().getTitle(), model.getTitle()))
 			.description("some car description")
 			.plateNumber(String.format("%s%s", randomGenerator.getRandomUppercaseString(3),
 					randomGenerator.getRandomInt(100, 999)))
@@ -92,8 +94,8 @@ public class ListingFactory implements DummyFactory<Listing> {
 			.mileage(randomGenerator.getRandomInt(25_000, 300_000))
 			.productionYear(randomGenerator.getRandomInt(1998, 2023))
 			.condition(randomGenerator.getRandomBoolean() ? ConditionType.USED : ConditionType.DAMAGED)
-			.createdAt(new Date())
-			.updatedAt(new Date())
+			.createdAt(LocalDateTime.now())
+			.updatedAt(LocalDateTime.now())
 			.auction(randomGenerator.getRandomBoolean())
 			.fuelType(FuelType.DIESEL)
 			.transmissionType(TransmissionType.AUTOMATIC)
@@ -112,7 +114,7 @@ public class ListingFactory implements DummyFactory<Listing> {
 		int payload = randomGenerator.getRandomInt(800, 3500);
 
 		return TrailerListing.builder()
-			.title(String.format("%s %d", model.getName(), payload))
+			.title(String.format("%s %d", model.getTitle(), payload))
 			.description("some trailer description")
 			.price(randomGenerator.getRandomInt(800, 22000))
 			.user(user)
@@ -121,8 +123,8 @@ public class ListingFactory implements DummyFactory<Listing> {
 			.model(model)
 			.condition(randomGenerator.getRandomBoolean() ? ConditionType.USED : ConditionType.RESTORED)
 			.productionYear(randomGenerator.getRandomInt(1998, 2023))
-			.createdAt(new Date())
-			.updatedAt(new Date())
+			.createdAt(LocalDateTime.now())
+			.updatedAt(LocalDateTime.now())
 			.payload(payload)
 			.category(VehicleCategory.TRAILER)
 			.subCategory(VehicleSubCategory.TRAILER_LIGHT_TRAILER)
@@ -135,7 +137,7 @@ public class ListingFactory implements DummyFactory<Listing> {
 		VehicleModel model = randomGenerator.getRandomElement(models);
 
 		return PartListing.builder()
-			.title(String.format("Part %s", model.getName()))
+			.title(String.format("Part %s", model.getTitle()))
 			.description("some part description")
 			.price(randomGenerator.getRandomInt(800, 22000))
 			.user(user)
