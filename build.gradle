@@ -57,6 +57,11 @@ dependencies {
     testImplementation 'com.h2database:h2'
 }
 
+jar {
+    enabled = false
+    archiveFileName = bootJar.archiveFileName
+}
+
 tasks.named('test') {
     useJUnitPlatform()
 }
