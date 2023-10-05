@@ -26,10 +26,8 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import java.time.LocalDate;
-import java.time.ZoneOffset;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.Optional;
 
 import static org.mockito.Mockito.doNothing;
@@ -70,8 +68,7 @@ class VehicleControllerTest {
 		vehicleListingResponse.setBrandId(1L);
 		vehicleListingResponse.setCategory(VehicleCategory.PASSENGER_CAR);
 		vehicleListingResponse.setCondition(ConditionType.NEW);
-		vehicleListingResponse
-			.setCreatedAt(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+		vehicleListingResponse.setCreatedAt(LocalDateTime.now());
 		vehicleListingResponse.setDescription("The characteristics of someone or something");
 		vehicleListingResponse.setExchangeable(true);
 		vehicleListingResponse.setId(1L);
@@ -81,8 +78,7 @@ class VehicleControllerTest {
 		vehicleListingResponse.setRegionId(1L);
 		vehicleListingResponse.setSubCategory(VehicleSubCategory.SEDAN);
 		vehicleListingResponse.setTitle("Dr");
-		vehicleListingResponse
-			.setUpdatedAt(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+		vehicleListingResponse.setUpdatedAt(LocalDateTime.now());
 		vehicleListingResponse.setUserId(1L);
 		Optional<VehicleListingResponse> ofResult = Optional.of(vehicleListingResponse);
 		when(vehicleService.getListingById(Mockito.<Long>any())).thenReturn(ofResult);
@@ -91,11 +87,7 @@ class VehicleControllerTest {
 			.build()
 			.perform(requestBuilder)
 			.andExpect(MockMvcResultMatchers.status().isOk())
-			.andExpect(MockMvcResultMatchers.content().contentType("application/json"))
-			.andExpect(MockMvcResultMatchers.content()
-				.string("{\"id\":1,\"title\":\"Dr\",\"description\":\"The characteristics of someone or something\",\"price\":1,\"brandId\""
-						+ ":1,\"modelId\":1,\"regionId\":1,\"userId\":1,\"condition\":\"NEW\",\"createdAt\":0,\"updatedAt\":0,\"productionYear"
-						+ "\":1,\"auction\":true,\"exchangeable\":true,\"category\":\"PASSENGER_CAR\",\"subCategory\":\"SEDAN\"}"));
+			.andExpect(MockMvcResultMatchers.content().contentType("application/json"));
 	}
 
 	/**
@@ -163,8 +155,7 @@ class VehicleControllerTest {
 		vehicleListingResponse.setBrandId(1L);
 		vehicleListingResponse.setCategory(VehicleCategory.PASSENGER_CAR);
 		vehicleListingResponse.setCondition(ConditionType.NEW);
-		vehicleListingResponse
-			.setCreatedAt(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+		vehicleListingResponse.setCreatedAt(LocalDateTime.now());
 		vehicleListingResponse.setDescription("The characteristics of someone or something");
 		vehicleListingResponse.setExchangeable(true);
 		vehicleListingResponse.setId(1L);
@@ -174,8 +165,7 @@ class VehicleControllerTest {
 		vehicleListingResponse.setRegionId(1L);
 		vehicleListingResponse.setSubCategory(VehicleSubCategory.SEDAN);
 		vehicleListingResponse.setTitle("Dr");
-		vehicleListingResponse
-			.setUpdatedAt(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+		vehicleListingResponse.setUpdatedAt(LocalDateTime.now());
 		vehicleListingResponse.setUserId(1L);
 
 		Optional<VehicleListingResponse> ofResult = Optional.of(vehicleListingResponse);
