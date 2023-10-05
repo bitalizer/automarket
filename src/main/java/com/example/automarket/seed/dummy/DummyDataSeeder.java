@@ -15,15 +15,12 @@ import org.springframework.stereotype.Component;
 @Profile("dev")
 public class DummyDataSeeder implements CommandLineRunner {
 
-	private final UserSeeder userSeeder;
-
 	@Lazy
 	private final ListingSeeder listingSeeder;
 
 	@Override
 	public void run(String... args) {
 		log.info("Seeding dummy data...");
-		userSeeder.run(50);
 		listingSeeder.run(150);
 	}
 
